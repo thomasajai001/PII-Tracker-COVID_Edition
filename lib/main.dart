@@ -21,6 +21,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text("PII Tracker"),
       ),
+      body: Text("HELLO WORLD"),
     );
   }
 }
