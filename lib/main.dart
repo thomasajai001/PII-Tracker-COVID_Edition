@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Navigator.pushNamed(context, '/registration');
+        Navigator.pushReplacementNamed(context, '/registration');
       },
     );
   }
