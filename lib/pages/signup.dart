@@ -2,7 +2,16 @@ import 'package:flutter/material.dart';
 
 // page for sign up for both customer and shopkeeper
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  void customerReg() {
+    Navigator.pushNamed(context, '/customerRegister');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -10,7 +19,7 @@ class SignUp extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
-            onPressed: null,
+            onPressed: customerReg,
             child: Text("Customer Sign Up"),
           ),
           SizedBox(
