@@ -22,21 +22,27 @@ Future<String> customerRegistration(String email, String password) async {
   return displayMsg;
 }
 
-Future<String> customerSignIn(String email, String password) async {
+Future<User> customerSignIn(String email, String password) async {
   String displayMsg = " ";
+  User user;
   try {
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
-    User user = _auth.currentUser;
+    user = _auth.currentUser;
     print(user.email);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
-      print('No user found for that email.');
+      throw ('No user found for that email.');
       displayMsg = 'No user found for that email.';
     } else if (e.code == 'wrong-password') {
-      print('Wrong password provided for that user.');
+      throw ('Wrong password provided for that user.');
       displayMsg = 'Wrong password provided for that user.';
     }
   }
-  return displayMsg;
+  return user;
+}
+
+void customerSignout() async {
+  await _auth.signOut();
+  print("Signed out");
 }

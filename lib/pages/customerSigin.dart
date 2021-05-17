@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomerSignIn extends StatefulWidget {
   @override
@@ -39,10 +40,16 @@ class _CustomerSignInState extends State<CustomerSignIn> {
     }
 
     if (errorEmail == " " && errorPass == " ") {
-      displayMsg = await customerSignIn(email, pswd);
+      User user = await customerSignIn(email, pswd).catchError((e) {
+        setState(() {
+          displayMsg = e;
+        });
+      });
       setState(() {
-        if (displayMsg == " ") {
-          displayMsg = "Login Succesfull";
+        if (user != null) {
+          Navigator.pushNamed(context, '/customerLoginPAge', arguments: {
+            'id': user.uid,
+          });
         }
       });
     }
@@ -52,7 +59,7 @@ class _CustomerSignInState extends State<CustomerSignIn> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Customer registration"),
+        title: Text("Customer login"),
         centerTitle: true,
       ),
       body: SafeArea(
