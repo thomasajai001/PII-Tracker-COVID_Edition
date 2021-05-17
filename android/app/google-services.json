@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "183044295467",
+    "project_id": "pii-covid-6a681",
+    "storage_bucket": "pii-covid-6a681.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:183044295467:android:f73b6d1283efeef3f6536e",
+        "android_client_info": {
+          "package_name": "com.example.pii_tracker_covid_edition"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "183044295467-jap91apvtisp8m85lskjinfi8dvvjm3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.pii_tracker_covid_edition",
+            "certificate_hash": "46ea670f385a3d082b5e936404e87777fc215162"
+          }
+        },
+        {
+          "client_id": "183044295467-qn7tr7oe2o98e4b9169qpj4bnn32ijgb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQDRSYJuLiUjQqD7Nv8LfyOQlB86lOsHo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "183044295467-qn7tr7oe2o98e4b9169qpj4bnn32ijgb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
