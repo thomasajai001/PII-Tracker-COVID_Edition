@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../auth.dart';
 
 class CustomerSignUp extends StatefulWidget {
   @override
@@ -15,8 +16,9 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
   String cpswd = " ";
   String errorcpswd = " ";
   String errorEmail = " ";
+  String displayMsg = " ";
 
-  void submit() {
+  void register() async {
     email = emailC.text.toString();
 
     pswd = pswdC.text.toString();
@@ -38,6 +40,19 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
     } else {
       setState(() {
         errorEmail = " ";
+      });
+    }
+
+    if (errorEmail == " " && errorcpswd == " ") {
+      displayMsg = await customerRegistration(email, pswd);
+      setState(() {
+        if (displayMsg == " ") {
+          displayMsg = "Registration Successfull";
+        } else {
+          email = " ";
+          pswd = " ";
+          cpswd = " ";
+        }
       });
     }
   }
@@ -76,9 +91,13 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
                 controller: cpswdC,
               ),
               ElevatedButton(
-                onPressed: submit,
+                onPressed: register,
                 child: Text("Register"),
               ),
+              SizedBox(
+                height: 30,
+              ),
+              Text(displayMsg),
             ],
           ),
         ),
