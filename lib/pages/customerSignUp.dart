@@ -50,35 +50,37 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                errorText: '$errorEmail',
-                hintText: "email",
+        child: Container(
+          margin: EdgeInsets.all(30),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TextField(
+                decoration: InputDecoration(
+                  errorText: '$errorEmail',
+                  hintText: "email",
+                ),
+                controller: emailC,
               ),
-              controller: emailC,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                hintText: "password",
+              TextField(
+                decoration: InputDecoration(
+                  hintText: "password",
+                ),
+                controller: pswdC,
               ),
-              controller: pswdC,
-            ),
-            TextField(
-              decoration: InputDecoration(
-                errorText: '$errorcpswd',
-                hintText: "renter password",
+              TextField(
+                decoration: InputDecoration(
+                  errorText: '$errorcpswd',
+                  hintText: "renter password",
+                ),
+                controller: cpswdC,
               ),
-              controller: cpswdC,
-            ),
-            Expanded(
-              child: ElevatedButton(
+              ElevatedButton(
                 onPressed: submit,
                 child: Text("Register"),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
