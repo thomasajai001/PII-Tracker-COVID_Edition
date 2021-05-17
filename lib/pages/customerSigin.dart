@@ -49,6 +49,8 @@ class _CustomerSignInState extends State<CustomerSignIn> {
         if (user != null) {
           Navigator.pushNamed(context, '/customerLoginPAge', arguments: {
             'id': user.uid,
+            'email': user.email,
+            'date': user.metadata,
           });
         }
       });

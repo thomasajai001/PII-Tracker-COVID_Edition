@@ -10,23 +10,38 @@ class CustomerLoginPage extends StatefulWidget {
 }
 
 bool dataFilled = false;
-Map data = {};
+Map Userid = {};
+Map datas = {};
+
+var list = [];
 
 class _CustomerLoginPageState extends State<CustomerLoginPage> {
   TextEditingController nameC = TextEditingController();
-  TextEditingController bodyC = TextEditingController();
-
+  TextEditingController addressC = TextEditingController();
+  TextEditingController vaccineC = TextEditingController();
+  String n = "";
+  String a = "";
+  String v = "";
   String name = " ";
   String body = " ";
-  String n = "";
-  String b = "";
+  String email = "";
+  DateTime date;
+  String address = "";
+  String vaccine = "";
   void add() {
-    name = nameC.text.toString();
-    body = bodyC.text.toString();
+    n = nameC.text.toString();
+    a = addressC.text.toString();
+    v = vaccineC.text.toString();
+    email = Userid['email'];
+    date = Userid['date'].creationTime;
+    print(date);
+
     CollectionReference users = firestore.collection('users');
-    users
-        .doc(data['id'])
-        .set({'name': name, 'body': body}).then((value) => print("added"));
+    users.doc(Userid['id']).set({
+      'name': n,
+      'address': a,
+      'vaccine': v,
+    }).then((value) => print("added"));
     setState(() {
       dataFilled = true;
     });
@@ -35,42 +50,34 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   @override
   void initState() {
     super.initState();
-    firestore.collection("users").doc(data['id']).get().then((doc) {
-      if (doc.exists) {
-        setState(() {
-          print(doc.get('name'));
-          // n = doc.data() as String;
-          // print(n);
-          // b = doc['body'];
-          dataFilled = true;
-        });
-      } else {
-        // doc.data() will be undefined in this case
-        setState(() {
-          dataFilled = false;
-        });
-      }
-    });
   }
 
   Widget build(BuildContext context) {
     setState(() {
-      data = ModalRoute.of(context).settings.arguments;
-      // firestore.collection("users").doc(data['id']).get().then((doc) {
-      //   if (doc.exists) {
-      //     setState(() {
-      //       print(doc.get('name'));
-      //       // n = doc['name'];
-      //       // b = doc['body'];
-      //       dataFilled = true;
-      //     });
-      //   } else {
-      //     // doc.data() will be undefined in this case
-      //     setState(() {
-      //       dataFilled = false;
-      //     });
-      //   }
-      // });
+      Userid = ModalRoute.of(context).settings.arguments;
+      email = Userid['email'];
+      firestore
+          .collection("users")
+          .doc(Userid['id'])
+          .get()
+          .then((DocumentSnapshot documentSnapshot) {
+        if (documentSnapshot.exists) {
+          setState(() {
+            datas = documentSnapshot.data();
+            list = datas.values.toList();
+            print(list);
+
+            name = list[2];
+            address = list[1];
+            vaccine = list[0];
+            dataFilled = true;
+          });
+        } else {
+          setState(() {
+            dataFilled = false;
+          });
+        }
+      });
     });
 
     return (!dataFilled)
@@ -81,21 +88,27 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             ),
             body: SafeArea(
               child: Container(
-                margin: EdgeInsets.all(30),
+                margin: EdgeInsets.all(15),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextField(
                       decoration: InputDecoration(
-                        hintText: "name",
+                        hintText: "Name",
                       ),
                       controller: nameC,
                     ),
                     TextField(
                       decoration: InputDecoration(
-                        hintText: "password",
+                        hintText: "Address",
                       ),
-                      controller: bodyC,
+                      controller: addressC,
+                    ),
+                    TextField(
+                      decoration: InputDecoration(
+                        hintText: "Vaccine Status",
+                      ),
+                      controller: vaccineC,
                     ),
                     ElevatedButton(
                       onPressed: add,
@@ -121,7 +134,40 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
               title: Text("Customer page"),
               centerTitle: true,
             ),
-            body: Text(data['id']),
+            body: Column(
+              children: [
+                ListTile(
+                  tileColor: Colors.grey[100],
+                  title: Text("Name"),
+                  subtitle: Text(name),
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  tileColor: Colors.grey[100],
+                  title: Text("Email"),
+                  subtitle: Text(email),
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  tileColor: Colors.grey[100],
+                  title: Text("Adress"),
+                  subtitle: Text(address),
+                ),
+                SizedBox(height: 10),
+                ListTile(
+                  tileColor: Colors.grey[100],
+                  title: Text("Vaccine Status"),
+                  subtitle: Text(vaccine),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    customerSignout();
+                    Navigator.pushNamed(context, '/registration');
+                  },
+                  child: Text("logout"),
+                ),
+              ],
+            ),
           );
   }
 }
