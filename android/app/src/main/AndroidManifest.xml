@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.pii_tracker_covid_edition">
+     <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="pii_tracker_covid_edition"
         android:icon="@mipmap/ic_launcher">
