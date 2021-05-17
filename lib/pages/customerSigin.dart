@@ -1,39 +1,25 @@
 import 'package:flutter/material.dart';
 import '../auth.dart';
 
-class CustomerSignUp extends StatefulWidget {
+class CustomerSignIn extends StatefulWidget {
   @override
-  _CustomerSignUpState createState() => _CustomerSignUpState();
+  _CustomerSignInState createState() => _CustomerSignInState();
 }
 
-class _CustomerSignUpState extends State<CustomerSignUp> {
+class _CustomerSignInState extends State<CustomerSignIn> {
   TextEditingController emailC = TextEditingController();
   TextEditingController pswdC = TextEditingController();
-  TextEditingController cpswdC = TextEditingController();
 
   String email = " ";
   String pswd = " ";
-  String cpswd = " ";
-  String errorcpswd = " ";
   String errorEmail = " ";
+  String errorPass = " ";
   String displayMsg = " ";
 
-  void register() async {
+  void login() async {
     email = emailC.text.toString();
-
     pswd = pswdC.text.toString();
-    cpswd = cpswdC.text.toString();
-
-    if (pswd != cpswd) {
-      setState(() {
-        errorcpswd = "Password not MAtchig";
-      });
-    } else {
-      setState(() {
-        errorcpswd = " ";
-      });
-    }
-    if (email == "") {
+    if (email == " ") {
       setState(() {
         errorEmail = "Please provide an email";
       });
@@ -42,13 +28,20 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
         errorEmail = " ";
       });
     }
-
-    if (errorEmail == " " && errorcpswd == " ") {
-      displayMsg = await customerRegistration(email, pswd);
+    if (pswd == " ") {
       setState(() {
-        if (displayMsg == " ") {
-          displayMsg = "Registration Successfull";
-        }
+        errorPass = "Please provide an password";
+      });
+    } else {
+      setState(() {
+        errorPass = " ";
+      });
+    }
+
+    if (errorEmail == " " && errorPass == " ") {
+      displayMsg = await customerSignIn(email, pswd);
+      setState(() {
+        if (displayMsg == " ") {}
       });
     }
   }
@@ -75,20 +68,12 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
               ),
               TextField(
                 decoration: InputDecoration(
-                  hintText: "password",
-                ),
+                    hintText: "password", errorText: '$errorPass '),
                 controller: pswdC,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  errorText: '$errorcpswd',
-                  hintText: "renter password",
-                ),
-                controller: cpswdC,
-              ),
               ElevatedButton(
-                onPressed: register,
-                child: Text("Register"),
+                onPressed: login,
+                child: Text("Login"),
               ),
               SizedBox(
                 height: 30,

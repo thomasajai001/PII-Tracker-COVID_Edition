@@ -22,7 +22,8 @@ Future<String> customerRegistration(String email, String password) async {
   return displayMsg;
 }
 
-void customerSignIn(String email, String password) async {
+Future<String> customerSignIn(String email, String password) async {
+  String displayMsg = " ";
   try {
     UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: email, password: password);
@@ -31,8 +32,10 @@ void customerSignIn(String email, String password) async {
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {
       print('No user found for that email.');
+      displayMsg = 'No user found for that email.';
     } else if (e.code == 'wrong-password') {
       print('Wrong password provided for that user.');
+      displayMsg = 'Wrong password provided for that user.';
     }
   }
 }
