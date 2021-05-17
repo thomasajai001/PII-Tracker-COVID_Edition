@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pii_tracker_covid_edition/pages/customerSignUp.dart';
 import './pages/registration.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +21,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         // page route for login/registration page
         '/registration': (context) => Registration(),
+        '/customerRegister': (context) => CustomerSignUp(),
       },
     );
   }
@@ -34,6 +37,13 @@ class _MyHomePageState extends State<MyHomePage> {
   // initstate invoked at the begining when the app is rebuilt
   void initState() {
     super.initState();
+
+    // FIREBASE INITIALIZATION
+    Firebase.initializeApp().whenComplete(() {
+      print("completed");
+      setState(() {});
+    });
+
     //after delay of 2 seconds it will push to registration.dart in pages folder
     Future.delayed(
       const Duration(seconds: 2),
