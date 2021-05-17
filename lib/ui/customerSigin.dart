@@ -64,7 +64,7 @@ class _CustomerSignInState extends State<CustomerSignIn> {
               TextField(
                 decoration: InputDecoration(
                   errorText: '$errorEmail',
-                  hintText: "email",
+                  hintText: "something@email.com",
                 ),
                 controller: emailC,
               ),

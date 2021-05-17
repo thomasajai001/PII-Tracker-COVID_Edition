@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pii_tracker_covid_edition/pages/login.dart';
-import 'package:pii_tracker_covid_edition/pages/signup.dart';
+import './login.dart';
+import './signup.dart';
 
 // page for user sign in and sign up
 
@@ -23,7 +23,10 @@ class _RegistrationState extends State<Registration>
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Welcome"),
+        backgroundColor: Colors.amber[700],
+      ),
       body: SafeArea(
         child: TabBarView(
           controller: object,
@@ -34,24 +37,34 @@ class _RegistrationState extends State<Registration>
         ),
       ),
       bottomNavigationBar: Material(
-        color: Colors.blue[400],
+        color: Colors.blue[500],
         child: TabBar(
-          indicatorColor: Colors.red,
+          indicatorColor: Colors.blue[900],
 
           overlayColor: MaterialStateProperty.all<Color>(
-            Color(0xFF51ff0d),
+            Colors.blueAccent,
           ), //onhovering color
 
-          labelColor: Colors.black, // icon color
+          labelColor: Colors.white, // icon color
 
           controller: object,
 
           tabs: [
             Tab(
-              child: Text("Customer"),
+              child: Text(
+                "Customer",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
             ),
             Tab(
-              child: Text("Shopkeeper"),
+              child: Text(
+                "Shopkeeper",
+                style: TextStyle(
+                  fontSize: 18,
+                ),
+              ),
             ),
           ],
         ),

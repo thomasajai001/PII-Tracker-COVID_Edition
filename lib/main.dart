@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pii_tracker_covid_edition/pages/customerSigin.dart';
-import 'package:pii_tracker_covid_edition/pages/customerSignUp.dart';
-import './pages/registration.dart';
+import 'ui/customerSigin.dart';
+import 'ui/customerSignUp.dart';
+import 'ui/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {

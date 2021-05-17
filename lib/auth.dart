@@ -1,12 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
-
 Future<String> customerRegistration(String email, String password) async {
-  String displayMsg = " ";
+  String displayMsg = "";
   try {
-    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
+    UserCredential userCredential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
     print(email);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'weak-password') {
@@ -17,7 +15,7 @@ Future<String> customerRegistration(String email, String password) async {
       displayMsg = 'The account already exists for that email.';
     }
   } catch (e) {
-    print(e);
+    return e.toString();
   }
   return displayMsg;
 }
@@ -25,9 +23,9 @@ Future<String> customerRegistration(String email, String password) async {
 Future<String> customerSignIn(String email, String password) async {
   String displayMsg = " ";
   try {
-    UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email, password: password);
-    User user = _auth.currentUser;
+    UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
+    User user = FirebaseAuth.instance.currentUser;
     print(user.email);
   } on FirebaseAuthException catch (e) {
     if (e.code == 'user-not-found') {

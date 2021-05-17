@@ -20,14 +20,34 @@ class _SignUpState extends State<SignUp> {
         children: [
           ElevatedButton(
             onPressed: customerReg,
-            child: Text("Sign Up"),
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width / 1.6,
+              height: 60,
+              child: Text(
+                "Sign Up",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ),
           SizedBox(
             height: 30,
           ),
           ElevatedButton(
             onPressed: () => {Navigator.pushNamed(context, '/customerSignIn')},
-            child: Text("Login"),
+            child: Container(
+              alignment: Alignment.center,
+              width: MediaQuery.of(context).size.width / 1.6,
+              height: 60,
+              child: Text(
+                "Login",
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
           ),
         ],
       ),

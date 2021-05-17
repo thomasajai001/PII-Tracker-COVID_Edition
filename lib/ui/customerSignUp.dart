@@ -11,26 +11,28 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
   TextEditingController pswdC = TextEditingController();
   TextEditingController cpswdC = TextEditingController();
 
-  String email = " ";
-  String pswd = " ";
-  String cpswd = " ";
-  String errorcpswd = " ";
-  String errorEmail = " ";
-  String displayMsg = " ";
+  String email = "";
+  String pswd = "";
+  String cpswd = "";
+  String errorcpswd = "";
+  String errorEmail = "";
+  String displayMsg = "";
 
   void register() async {
     email = emailC.text.toString();
-
     pswd = pswdC.text.toString();
     cpswd = cpswdC.text.toString();
-
-    if (pswd != cpswd) {
+    if (pswd.isEmpty || cpswd.isEmpty)
       setState(() {
-        errorcpswd = "Password not MAtchig";
+        errorcpswd = "Password cannot be empty";
+      });
+    else if (pswd != cpswd) {
+      setState(() {
+        errorcpswd = "Password not Matching";
       });
     } else {
       setState(() {
-        errorcpswd = " ";
+        errorcpswd = "";
       });
     }
     if (email == "") {
@@ -39,19 +41,22 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
       });
     } else {
       setState(() {
-        errorEmail = " ";
+        errorEmail = "";
       });
     }
 
-    if (errorEmail == " " && errorcpswd == " ") {
+    if (errorEmail == "" && errorcpswd == "") {
       displayMsg = await customerRegistration(email, pswd);
       setState(() {
-        if (displayMsg == " ") {
+        if (displayMsg == "") {
           displayMsg = "Registration Successfull";
         }
       });
     }
   }
+
+  Future<String> getDisplayMessage() async =>
+      await customerRegistration(email, pswd);
 
   @override
   Widget build(BuildContext context) {
@@ -64,31 +69,46 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
         child: Container(
           margin: EdgeInsets.all(30),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox.fromSize(
+                size: Size.fromHeight(60),
+              ),
               TextField(
                 decoration: InputDecoration(
-                  errorText: '$errorEmail',
-                  hintText: "email",
+                  labelText: "Email",
+                  errorText: errorEmail == "" ? null : '$errorEmail',
+                  hintText: "something@email.com",
                 ),
                 controller: emailC,
               ),
               TextField(
                 decoration: InputDecoration(
-                  hintText: "password",
+                  labelText: "Password",
                 ),
                 controller: pswdC,
               ),
               TextField(
                 decoration: InputDecoration(
-                  errorText: '$errorcpswd',
-                  hintText: "renter password",
+                  errorText: errorcpswd == "" ? null : '$errorcpswd',
+                  labelText: "Confirm password",
                 ),
                 controller: cpswdC,
               ),
+              SizedBox(
+                height: 30,
+              ),
               ElevatedButton(
                 onPressed: register,
-                child: Text("Register"),
+                child: Container(
+                    padding: EdgeInsets.all(10),
+                    alignment: Alignment.center,
+                    width: MediaQuery.of(context).size.width / 2,
+                    child: Text(
+                      "Register",
+                      style: TextStyle(
+                        fontSize: 17,
+                      ),
+                    )),
               ),
               SizedBox(
                 height: 30,
