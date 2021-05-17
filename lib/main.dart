@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pii_tracker_covid_edition/pages/customerSigin.dart';
 import 'package:pii_tracker_covid_edition/pages/customerSignUp.dart';
 import './pages/registration.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,6 +23,7 @@ class _MyAppState extends State<MyApp> {
         // page route for login/registration page
         '/registration': (context) => Registration(),
         '/customerRegister': (context) => CustomerSignUp(),
+        '/customerSignIn': (context) => CustomerSignIn(),
       },
     );
   }
