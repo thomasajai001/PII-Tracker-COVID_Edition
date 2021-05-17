@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "610293281875",
+    "project_id": "pii-covid",
+    "storage_bucket": "pii-covid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:610293281875:android:c9f6a7be28a687c9d5c2a6",
+        "android_client_info": {
+          "package_name": "com.android.application"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "610293281875-29et3qcuom69ra7atn138jjft2acj2s9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.application",
+            "certificate_hash": "46ea670f385a3d082b5e936404e87777fc215162"
+          }
+        },
+        {
+          "client_id": "610293281875-f56bhlnhsba6qtvme1igrbtk0hiqdlna.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV822GbMkparDD-8DzOktZuuT8xsaAr9A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "610293281875-f56bhlnhsba6qtvme1igrbtk0hiqdlna.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
