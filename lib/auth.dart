@@ -38,4 +38,5 @@ Future<String> customerSignIn(String email, String password) async {
       displayMsg = 'Wrong password provided for that user.';
     }
   }
+  return displayMsg;
 }

@@ -11,14 +11,14 @@ class Login extends StatelessWidget {
         children: [
           ElevatedButton(
             onPressed: null,
-            child: Text("Customer login"),
+            child: Text("Sign Up"),
           ),
           SizedBox(
             height: 30,
           ),
           ElevatedButton(
             onPressed: null,
-            child: Text("shopkeeper login"),
+            child: Text("Login"),
           )
         ],
       ),

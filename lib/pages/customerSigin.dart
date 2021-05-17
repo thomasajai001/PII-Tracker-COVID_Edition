@@ -41,7 +41,9 @@ class _CustomerSignInState extends State<CustomerSignIn> {
     if (errorEmail == " " && errorPass == " ") {
       displayMsg = await customerSignIn(email, pswd);
       setState(() {
-        if (displayMsg == " ") {}
+        if (displayMsg == " ") {
+          displayMsg = "Login Succesfull";
+        }
       });
     }
   }

@@ -48,10 +48,10 @@ class _RegistrationState extends State<Registration>
 
           tabs: [
             Tab(
-              child: Text("SIGN UP"),
+              child: Text("Customer"),
             ),
             Tab(
-              child: Text("LOGIN"),
+              child: Text("Shopkeeper"),
             ),
           ],
         ),

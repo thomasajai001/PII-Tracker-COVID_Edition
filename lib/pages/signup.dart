@@ -20,15 +20,15 @@ class _SignUpState extends State<SignUp> {
         children: [
           ElevatedButton(
             onPressed: customerReg,
-            child: Text("Customer Sign Up"),
+            child: Text("Sign Up"),
           ),
           SizedBox(
             height: 30,
           ),
           ElevatedButton(
-            onPressed: null,
-            child: Text("shopkeeper Sign Up"),
-          )
+            onPressed: () => {Navigator.pushNamed(context, '/customerSignIn')},
+            child: Text("Login"),
+          ),
         ],
       ),
     );
