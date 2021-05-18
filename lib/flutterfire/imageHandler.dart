@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,30 +12,30 @@ class ImageHandler extends StatefulWidget {
 }
 
 class _ImageHandlerState extends State<ImageHandler> {
-  String ImageUrl = " ";
+  String imageUrl = " ";
 
   void uploadImage() async {
     final _pickr = ImagePicker();
-    PickedFile Image;
+    PickedFile image;
 //handle permission
     var permissionstatus = await Permission.photos.request();
     if (permissionstatus.isGranted) {
-      Image = await _pickr.getImage(source: ImageSource.gallery);
-      var file = File(Image.path);
-      if (Image != null) {
+      image = await _pickr.getImage(source: ImageSource.gallery);
+      var file = File(image.path);
+      if (image != null) {
         _storage = FirebaseStorage.instance;
         var snapshot =
-            await _storage.ref().child('images/').putFile(file).snapshot;
+            _storage.ref().child('images/').putFile(file).snapshot;
         var url = await snapshot.ref.getDownloadURL();
         setState(() {
-          ImageUrl = url;
+          imageUrl = url;
         });
         AlertDialog(
           title: Text("Upload Complete"),
         );
         Navigator.pushReplacementNamed(context, '/customerLoginPAge',
             arguments: {
-              'url': ImageUrl,
+              'url': imageUrl,
             });
       }
     } else {

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 // page for sign up for both customer and shopkeeper
 
-class SignUp extends StatefulWidget {
+class CustomerLaunchPage extends StatefulWidget {
   @override
-  _SignUpState createState() => _SignUpState();
+  _CustomerLaunchPageState createState() => _CustomerLaunchPageState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _CustomerLaunchPageState extends State<CustomerLaunchPage> {
   void customerReg() {
     Navigator.pushNamed(context, '/customerRegister');
   }

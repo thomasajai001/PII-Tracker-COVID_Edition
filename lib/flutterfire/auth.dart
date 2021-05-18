@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-Future<String> customerRegistration(String email, String password) async {
+Future<String> userRegistration(String email, String password) async {
   String displayMsg = "";
   try {
     await FirebaseAuth.instance
@@ -20,8 +20,7 @@ Future<String> customerRegistration(String email, String password) async {
   return displayMsg;
 }
 
-Future<User> customerSignIn(String email, String password) async {
-  String displayMsg = " ";
+Future<User> userSignIn(String email, String password) async {
   User user;
   try {
     await FirebaseAuth.instance.signInWithEmailAndPassword(
@@ -37,6 +36,7 @@ Future<User> customerSignIn(String email, String password) async {
   }
   return user;
 }
+
 
 void customerSignout() async {
   await FirebaseAuth.instance.signOut();

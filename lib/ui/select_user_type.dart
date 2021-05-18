@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import './login.dart';
-import './signup.dart';
+import './customer/customer_launch_page.dart';
+import './shopkeeper/shopkeeper_launch_page.dart';
 
 // page for user sign in and sign up
 
-class Registration extends StatefulWidget {
+class SelectUserType extends StatefulWidget {
   @override
-  _RegistrationState createState() => _RegistrationState();
+  _SelectUserTypeState createState() => _SelectUserTypeState();
 }
 
 // object of tab controller
 TabController object;
 
-class _RegistrationState extends State<Registration>
+class _SelectUserTypeState extends State<SelectUserType>
     with TickerProviderStateMixin {
   @override
   void initState() {
@@ -31,8 +31,8 @@ class _RegistrationState extends State<Registration>
         child: TabBarView(
           controller: object,
           children: [
-            SignUp(), //present in /pages/login.dart
-            Login(), //present in /pages/signup.dart
+            CustomerLaunchPage(), //present in /pages/login.dart
+            ShopkeeperLaunchPage(), //present in /pages/signup.dart
           ],
         ),
       ),

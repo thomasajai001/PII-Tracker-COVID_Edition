@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../auth.dart';
+import '../flutterfire/auth.dart';
 
-class CustomerSignUp extends StatefulWidget {
+class UserRegister extends StatefulWidget {
   @override
-  _CustomerSignUpState createState() => _CustomerSignUpState();
+  _UserRegisterState createState() => _UserRegisterState();
 }
 
-class _CustomerSignUpState extends State<CustomerSignUp> {
+class _UserRegisterState extends State<UserRegister> {
   TextEditingController emailC = TextEditingController();
   TextEditingController pswdC = TextEditingController();
   TextEditingController cpswdC = TextEditingController();
@@ -46,7 +46,7 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
     }
 
     if (errorEmail == "" && errorcpswd == "") {
-      displayMsg = await customerRegistration(email, pswd);
+      displayMsg = await userRegistration(email, pswd);
       setState(() {
         if (displayMsg == "") {
           displayMsg = "Registration Successfull";
@@ -56,13 +56,13 @@ class _CustomerSignUpState extends State<CustomerSignUp> {
   }
 
   Future<String> getDisplayMessage() async =>
-      await customerRegistration(email, pswd);
+      await userRegistration(email, pswd);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Customer registration"),
+        title: Text("Shopkeeper registration"),
         centerTitle: true,
       ),
       body: SafeArea(

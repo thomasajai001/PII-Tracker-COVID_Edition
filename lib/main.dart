@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'ui/customerSigin.dart';
-import 'ui/customerSignUp.dart';
-import 'ui/registration.dart';
-import 'ui/customerLoginPage.dart';
-import 'imageHandler.dart';
+import 'ui/customer/customer_sign_in.dart';
+import './ui/user_register.dart';
+import 'ui/select_user_type.dart';
+import 'ui/customer/customer_home_page.dart';
+import 'flutterfire/imageHandler.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'ui/shopkeeper/shopkeeper_sign_in.dart';
+import 'ui/shopkeeper/shopkeeper_home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,12 +26,14 @@ class _MyAppState extends State<MyApp> {
       // routes for naviagting to different pages
       routes: {
         // page route for login/registration page
-        '/registration': (context) => Registration(),
-        '/customerRegister': (context) => CustomerSignUp(),
+        '/selectUserType': (context) => SelectUserType(),
+        '/customerRegister': (context) => UserRegister(),
+        '/shopkeeperRegister': (context) => UserRegister(),
         '/customerSignIn': (context) => CustomerSignIn(),
-        '/customerLoginPage': (context) => CustomerLoginPage(),
-                '/imageUpload': (context) => ImageHandler(),
-
+        '/shopkeeperSignIn': (context) => ShopkeeperSignIn(),
+        '/customerHomePage': (context) => CustomerHomePage(),
+        '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
+        '/imageUpload': (context) => ImageHandler(),
       },
     );
   }
@@ -55,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
     Future.delayed(
       const Duration(seconds: 2),
       () {
-        Navigator.pushReplacementNamed(context, '/registration');
+        Navigator.pushReplacementNamed(context, '/selectUserType');
       },
     );
   }

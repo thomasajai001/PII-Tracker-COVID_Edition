@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pii_tracker_covid_edition/imageHandler.dart';
-import '../auth.dart';
+import '../../flutterfire/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,18 +10,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage _storage;
 
-class CustomerLoginPage extends StatefulWidget {
+class CustomerHomePage extends StatefulWidget {
   @override
-  _CustomerLoginPageState createState() => _CustomerLoginPageState();
+  _CustomerHomePageState createState() => _CustomerHomePageState();
 }
 
 bool dataFilled = false;
-Map Userid = {};
+Map userId = {};
 Map datas = {};
 
 var list = [];
 
-class _CustomerLoginPageState extends State<CustomerLoginPage> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
   TextEditingController nameC = TextEditingController();
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
@@ -41,12 +40,12 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
     n = nameC.text.toString();
     a = addressC.text.toString();
     v = vaccineC.text.toString();
-    email = Userid['email'];
-    date = Userid['date'].creationTime;
+    email = userId['email'];
+    date = userId['date'].creationTime;
     print(date);
 
     CollectionReference users = firestore.collection('users');
-    users.doc(Userid['id']).set({
+    users.doc(userId['id']).set({
       'name': n,
       'address': a,
       'vaccine': v,
@@ -59,16 +58,15 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
   void imageUpload() async {
     final _pickr = ImagePicker();
-    PickedFile Image;
+    PickedFile image;
 //handle permission
     var permissionstatus = await Permission.photos.request();
     if (permissionstatus.isGranted) {
-      Image = await _pickr.getImage(source: ImageSource.gallery);
-      var file = File(Image.path);
-      if (Image != null) {
+      image = await _pickr.getImage(source: ImageSource.gallery);
+      var file = File(image.path);
+      if (image != null) {
         _storage = FirebaseStorage.instance;
-        var snapshot =
-            await _storage.ref().child('images/').putFile(file).snapshot;
+        var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
         var url = await snapshot.ref.getDownloadURL();
         setState(() {
           i = url;
@@ -96,12 +94,12 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
 
   Widget build(BuildContext context) {
     setState(() {
-      Userid = ModalRoute.of(context).settings.arguments;
+      userId = ModalRoute.of(context).settings.arguments;
 
-      email = Userid['email'];
+      email = userId['email'];
       firestore
           .collection("users")
-          .doc(Userid['id'])
+          .doc(userId['id'])
           .get()
           .then((DocumentSnapshot documentSnapshot) {
         if (documentSnapshot.exists) {
@@ -215,7 +213,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                 ElevatedButton(
                   onPressed: () {
                     customerSignout();
-                    Navigator.pushNamed(context, '/registration');
+                    Navigator.pushNamed(context, '/selectUserType');
                   },
                   child: Text("logout"),
                 ),

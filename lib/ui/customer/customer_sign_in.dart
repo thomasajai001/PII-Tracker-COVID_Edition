@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../auth.dart';
+import '../../flutterfire/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class CustomerSignIn extends StatefulWidget {
@@ -40,14 +40,14 @@ class _CustomerSignInState extends State<CustomerSignIn> {
     }
 
     if (errorEmail == " " && errorPass == " ") {
-      User user = await customerSignIn(email, pswd).catchError((e) {
+      User user = await userSignIn(email, pswd).catchError((e) {
         setState(() {
           displayMsg = e;
         });
       });
       setState(() {
         if (user != null) {
-          Navigator.pushNamed(context, '/customerLoginPage', arguments: {
+          Navigator.pushNamed(context, '/customerHomePage', arguments: {
             'id': user.uid,
             'email': user.email,
             'date': user.metadata,
