@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pii_tracker_covid_edition/imageHandler.dart';
 import 'package:pii_tracker_covid_edition/pages/customerLoginPage.dart';
 import 'package:pii_tracker_covid_edition/pages/customerSigin.dart';
 import 'package:pii_tracker_covid_edition/pages/customerSignUp.dart';
@@ -19,6 +20,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "PII Tracker - COVID Edition", home: MyHomePage(),
+
       // routes for naviagting to different pages
       routes: {
         // page route for login/registration page
@@ -26,6 +28,7 @@ class _MyAppState extends State<MyApp> {
         '/customerRegister': (context) => CustomerSignUp(),
         '/customerSignIn': (context) => CustomerSignIn(),
         '/customerLoginPAge': (context) => CustomerLoginPage(),
+        '/imageUpload': (context) => ImageHandler(),
       },
     );
   }

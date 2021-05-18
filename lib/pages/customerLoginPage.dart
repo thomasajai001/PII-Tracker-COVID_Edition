@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:pii_tracker_covid_edition/imageHandler.dart';
 import '../auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
+FirebaseStorage _storage;
 
 class CustomerLoginPage extends StatefulWidget {
   @override
@@ -22,6 +29,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   String n = "";
   String a = "";
   String v = "";
+  String i = " ";
+  String imageUrl = " ";
   String name = " ";
   String body = " ";
   String email = "";
@@ -41,10 +50,43 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
       'name': n,
       'address': a,
       'vaccine': v,
+      'imageUrl': i,
     }).then((value) => print("added"));
     setState(() {
       dataFilled = true;
     });
+  }
+
+  void imageUpload() async {
+    final _pickr = ImagePicker();
+    PickedFile Image;
+//handle permission
+    var permissionstatus = await Permission.photos.request();
+    if (permissionstatus.isGranted) {
+      Image = await _pickr.getImage(source: ImageSource.gallery);
+      var file = File(Image.path);
+      if (Image != null) {
+        _storage = FirebaseStorage.instance;
+        var snapshot =
+            await _storage.ref().child('images/').putFile(file).snapshot;
+        var url = await snapshot.ref.getDownloadURL();
+        setState(() {
+          i = url;
+        });
+        Fluttertoast.showToast(
+            msg: "Upload Complete",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey[400],
+            textColor: Colors.white,
+            fontSize: 16.0);
+      }
+    } else {
+      print("Grant permission");
+    }
+//select image
+// upload to storage
   }
 
   @override
@@ -55,6 +97,7 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
   Widget build(BuildContext context) {
     setState(() {
       Userid = ModalRoute.of(context).settings.arguments;
+
       email = Userid['email'];
       firestore
           .collection("users")
@@ -66,8 +109,8 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             datas = documentSnapshot.data();
             list = datas.values.toList();
             print(list);
-
-            name = list[2];
+            imageUrl = list[2];
+            name = list[3];
             address = list[1];
             vaccine = list[0];
             dataFilled = true;
@@ -111,6 +154,10 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
                       controller: vaccineC,
                     ),
                     ElevatedButton(
+                      onPressed: imageUpload,
+                      child: Text("Upload photo"),
+                    ),
+                    ElevatedButton(
                       onPressed: add,
                       child: Text("Add"),
                     ),
@@ -136,6 +183,12 @@ class _CustomerLoginPageState extends State<CustomerLoginPage> {
             ),
             body: Column(
               children: [
+                SizedBox(height: 20),
+                CircleAvatar(
+                  radius: 80,
+                  backgroundImage: NetworkImage(imageUrl),
+                ),
+                SizedBox(height: 20),
                 ListTile(
                   tileColor: Colors.grey[100],
                   title: Text("Name"),
