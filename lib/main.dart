@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         '/shopkeeperSignIn': (context) => ShopkeeperSignIn(),
         '/customerHomePage': (context) => CustomerHomePage(),
         '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
-        '/imageUpload': (context) => ImageHandler(),
+        //'/imageUpload': (context) => ImageHandler(),
       },
     );
   }
