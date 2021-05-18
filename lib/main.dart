@@ -3,6 +3,7 @@ import 'ui/customerSigin.dart';
 import 'ui/customerSignUp.dart';
 import 'ui/registration.dart';
 import 'ui/customerLoginPage.dart';
+import 'imageHandler.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
@@ -26,6 +27,8 @@ class _MyAppState extends State<MyApp> {
         '/customerRegister': (context) => CustomerSignUp(),
         '/customerSignIn': (context) => CustomerSignIn(),
         '/customerLoginPage': (context) => CustomerLoginPage(),
+                '/imageUpload': (context) => ImageHandler(),
+
       },
     );
   }
