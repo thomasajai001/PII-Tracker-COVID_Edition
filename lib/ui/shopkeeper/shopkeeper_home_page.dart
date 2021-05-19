@@ -47,7 +47,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     CollectionReference users = firestore.collection('Shopkeeper');
     users.doc(uid).set({
       'shopName': shopName,
-      'shopkeeperName ': shopkeeperName,
+      'shopkeeperName': shopkeeperName,
       'address': address,
       'imageUrl': i,
       'vaccine': vaccine,
@@ -67,11 +67,11 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
           datas = documentSnapshot.data();
           list = datas.values.toList();
           print(list);
-          imageUrl = list[3];
-          sN = list[4];
-          a = list[2];
-          skName = list[0];
-          v = list[1];
+          imageUrl = datas['imageUrl'];
+          sN = datas['shopName'];
+          a = datas['address'];
+          skName = datas['shopkeeperName'];
+          v = datas['vaccine'];
           dataExists = true;
         });
       } else {
@@ -130,12 +130,11 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
           datas = documentSnapshot.data();
           list = datas.values.toList();
 
-          imageUrl = list[3];
-          sN = list[4];
-          a = list[2];
-          skName = list[0];
-          v = list[1];
-
+          imageUrl = datas['imageUrl'];
+          sN = datas['shopName'];
+          a = datas['address'];
+          skName = datas['shopkeeperName'];
+          v = datas['vaccine'];
           dataExists = true;
         });
       } else {

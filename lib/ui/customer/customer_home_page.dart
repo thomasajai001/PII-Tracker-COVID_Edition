@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
+import './visited_shops.dart';
 
 // import 'package:fluttertoast/fluttertoast.dart';
 
@@ -198,35 +199,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 
   Widget build(BuildContext context) {
-    // if (check == 0) {
-    //   userId = ModalRoute.of(context).settings.arguments;
-
-    //   email = userId['email'];
-    //   firestore
-    //       .collection("users")
-    //       .doc(userId['id'])
-    //       .get()
-    //       .then((DocumentSnapshot documentSnapshot) {
-    //     if (documentSnapshot.exists) {
-    //       setState(() {
-    //         datas = documentSnapshot.data();
-    //         list = datas.values.toList();
-    //         print(list);
-    //         imageUrl = list[2];
-    //         name = list[3];
-    //         address = list[1];
-    //         vaccine = list[0];
-    //         dataFilled = true;
-    //       });
-    //     } else {
-    //       setState(() {
-    //         dataFilled = false;
-    //       });
-    //     }
-    //   });
-    //   check++;
-    // }
-
     return (!dataFilled)
         ? Scaffold(
             appBar: AppBar(
@@ -339,7 +311,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                                 RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VisitedShops()));
+                    },
                     icon: Icon(Icons.list_rounded),
                     label: Text("View visited shops"),
                   ),
