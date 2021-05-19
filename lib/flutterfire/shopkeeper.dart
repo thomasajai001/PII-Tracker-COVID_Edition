@@ -1,9 +1,5 @@
-import 'dart:io';
-import 'dart:ui';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 void addDeails({
   String shopName,
@@ -33,3 +29,22 @@ void addDeails({
   }
 }
 
+// // Future<Map<String, Object>> getDetails() async {
+// void getDetails() async {
+//   void getDetails() async {
+//     try {
+//       String uid = FirebaseAuth.instance.currentUser.uid;
+//       DocumentReference documentReference =
+//           FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
+
+//       FirebaseFirestore.instance.runTransaction((transaction) async {
+//         DocumentSnapshot snapshot = await transaction.get(documentReference);
+//         print("\n\n<><><><><>" +
+//             snapshot.data().toString() +
+//             "\n\n<><><><><>\n\n");
+//       });
+//     } catch (e) {
+//       print("\n\n<><><><><>" + e.toString() + "\n\n<><><><><>\n\n");
+//     }
+//   }
+// }
