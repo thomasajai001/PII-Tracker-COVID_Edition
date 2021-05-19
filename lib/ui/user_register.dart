@@ -68,53 +68,55 @@ class _UserRegisterState extends State<UserRegister> {
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.all(30),
-          child: Column(
-            children: [
-              SizedBox.fromSize(
-                size: Size.fromHeight(60),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  errorText: errorEmail == "" ? null : '$errorEmail',
-                  hintText: "something@email.com",
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox.fromSize(
+                  size: Size.fromHeight(60),
                 ),
-                controller: emailC,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  labelText: "Password",
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    errorText: errorEmail == "" ? null : '$errorEmail',
+                    hintText: "something@email.com",
+                  ),
+                  controller: emailC,
                 ),
-                controller: pswdC,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  errorText: errorcpswd == "" ? null : '$errorcpswd',
-                  labelText: "Confirm password",
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Password",
+                  ),
+                  controller: pswdC,
                 ),
-                controller: cpswdC,
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              ElevatedButton(
-                onPressed: register,
-                child: Container(
-                    padding: EdgeInsets.all(10),
-                    alignment: Alignment.center,
-                    width: MediaQuery.of(context).size.width / 2,
-                    child: Text(
-                      "Register",
-                      style: TextStyle(
-                        fontSize: 17,
-                      ),
-                    )),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              Text(displayMsg),
-            ],
+                TextField(
+                  decoration: InputDecoration(
+                    errorText: errorcpswd == "" ? null : '$errorcpswd',
+                    labelText: "Confirm password",
+                  ),
+                  controller: cpswdC,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                ElevatedButton(
+                  onPressed: register,
+                  child: Container(
+                      padding: EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Text(
+                        "Register",
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Text(displayMsg),
+              ],
+            ),
           ),
         ),
       ),

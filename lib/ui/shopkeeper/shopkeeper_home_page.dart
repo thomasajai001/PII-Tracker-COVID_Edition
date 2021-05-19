@@ -3,6 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../flutterfire/shopkeeper.dart';
 import '../../flutterfire/auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'dart:io';
+
+FirebaseStorage _storage;
 
 class ShopkeeperHomePage extends StatefulWidget {
   @override
@@ -15,9 +21,41 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
   String shopName, shopkeeperName, address, vaccine;
+  String i;
   int check = 0;
 
   bool dataExists = false;
+
+  void imageUpload() async {
+    final _pickr = ImagePicker();
+    PickedFile image;
+//handle permission
+    var permissionstatus = await Permission.photos.request();
+    if (permissionstatus.isGranted) {
+      image = await _pickr.getImage(source: ImageSource.gallery);
+      var file = File(image.path);
+      if (image != null) {
+        _storage = FirebaseStorage.instance;
+        var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
+        var url = await snapshot.ref.getDownloadURL();
+        setState(() {
+          i = url;
+        });
+        //   Fluttertoast.showToast(
+        //       msg: "Upload Complete",
+        //       toastLength: Toast.LENGTH_SHORT,
+        //       gravity: ToastGravity.CENTER,
+        //       timeInSecForIosWeb: 1,
+        //       backgroundColor: Colors.grey[400],
+        //       textColor: Colors.white,
+        //       fontSize: 16.0);
+      }
+    } else {
+      print("Grant permission");
+    }
+//select image
+// upload to storage
+  }
 
   void add({
     String shopName,
@@ -78,102 +116,106 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
           ? SafeArea(
               child: Container(
                 margin: EdgeInsets.all(15),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Shop Name",
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Shop Name",
+                        ),
+                        controller: shopNameC,
                       ),
-                      controller: shopNameC,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Shopkeeper Name",
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Shopkeeper Name",
+                        ),
+                        controller: shopkeeperNameC,
                       ),
-                      controller: shopkeeperNameC,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Address",
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Address",
+                        ),
+                        controller: addressC,
                       ),
-                      controller: addressC,
-                    ),
-                    TextField(
-                      decoration: InputDecoration(
-                        labelText: "Vaccine Status",
+                      TextField(
+                        decoration: InputDecoration(
+                          labelText: "Vaccine Status",
+                        ),
+                        controller: vaccineC,
                       ),
-                      controller: vaccineC,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        //TODO
-                      },
-                      child: Text("Upload photo"),
-                    ),
-                    ElevatedButton(
-                      onPressed: add,
-                      child: Text("Add"),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        customerSignout();
-                        Navigator.pushNamed(context, '/selectUserType');
-                      },
-                      child: Text("logout"),
-                    ),
-                  ],
+                      ElevatedButton(
+                        onPressed: () {
+                          //TODO
+                        },
+                        child: Text("Upload photo"),
+                      ),
+                      ElevatedButton(
+                        onPressed: add,
+                        child: Text("Add"),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          customerSignout();
+                          Navigator.pushNamed(context, '/selectUserType');
+                        },
+                        child: Text("logout"),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )
-          : Column(
-              children: [
-                // SizedBox(height: 20),
-                // CircleAvatar(
-                //   radius: 80,
-                //   backgroundImage: NetworkImage(imageUrl),
-                // ),
-                SizedBox(height: 20),
-                ListTile(
-                  tileColor: Colors.grey[100],
-                  title: Text("Shop Name"),
-                  subtitle: Text(shopName),
-                ),
-                // SizedBox(height: 10),
-                // ListTile(
-                //   tileColor: Colors.grey[100],
-                //   title: Text("Email"),
-                //   subtitle: Text(email),
-                // ),
-                SizedBox(height: 10),
-                ListTile(
-                  tileColor: Colors.grey[100],
-                  title: Text("Adress"),
-                  subtitle: Text(address),
-                ),
-                SizedBox(height: 10),
-                ListTile(
-                  tileColor: Colors.grey[100],
-                  title: Text("Vaccine Status"),
-                  subtitle: Text(vaccine),
-                ),
-                SizedBox(height: 10),
-                ListTile(
-                  tileColor: Colors.grey[100],
-                  title: Text("Shopkeeper Name"),
-                  subtitle: Text(shopkeeperName),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    customerSignout();
-                    Navigator.pushNamed(context, '/selectUserType');
-                  },
-                  child: Text("logout"),
-                ),
-              ],
+          : SingleChildScrollView(
+              child: Column(
+                children: [
+                  // SizedBox(height: 20),
+                  // CircleAvatar(
+                  //   radius: 80,
+                  //   backgroundImage: NetworkImage(imageUrl),
+                  // ),
+                  SizedBox(height: 20),
+                  ListTile(
+                    tileColor: Colors.grey[100],
+                    title: Text("Shop Name"),
+                    subtitle: Text(shopName),
+                  ),
+                  // SizedBox(height: 10),
+                  // ListTile(
+                  //   tileColor: Colors.grey[100],
+                  //   title: Text("Email"),
+                  //   subtitle: Text(email),
+                  // ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    tileColor: Colors.grey[100],
+                    title: Text("Adress"),
+                    subtitle: Text(address),
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    tileColor: Colors.grey[100],
+                    title: Text("Vaccine Status"),
+                    subtitle: Text(vaccine),
+                  ),
+                  SizedBox(height: 10),
+                  ListTile(
+                    tileColor: Colors.grey[100],
+                    title: Text("Shopkeeper Name"),
+                    subtitle: Text(shopkeeperName),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      customerSignout();
+                      Navigator.pushNamed(context, '/selectUserType');
+                    },
+                    child: Text("logout"),
+                  ),
+                ],
+              ),
             ),
     );
   }

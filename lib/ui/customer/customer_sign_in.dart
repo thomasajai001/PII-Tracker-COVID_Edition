@@ -47,11 +47,10 @@ class _CustomerSignInState extends State<CustomerSignIn> {
       });
       setState(() {
         if (user != null) {
-          Navigator.pushNamed(context, '/customerHomePage', arguments: {
-            'id': user.uid,
-            'email': user.email,
-            'date': user.metadata,
-          });
+          Navigator.pushReplacementNamed(
+            context,
+            '/customerHomePage',
+          );
         }
       });
     }
