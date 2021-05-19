@@ -15,6 +15,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
   String shopName, shopkeeperName, address, vaccine;
+  int check = 0;
 
   bool dataExists = false;
 
@@ -41,29 +42,32 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    String uid = FirebaseAuth.instance.currentUser.uid;
-    DocumentReference documentReference =
-        FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
+    if (check == 0) {
+      String uid = FirebaseAuth.instance.currentUser.uid;
+      DocumentReference documentReference =
+          FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
 
-    FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(documentReference);
-      Map<String, Object> data = snapshot.data();
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        DocumentSnapshot snapshot = await transaction.get(documentReference);
+        Map<String, Object> data = snapshot.data();
 
-      if (snapshot.exists) {
-        setState(() {
-          dataExists = true;
-          shopName = data['shopName'].toString();
-          shopkeeperName = data['shopkeeperName'].toString();
-          address = data['address'].toString();
-          vaccine = data['vaccineStatus'].toString();
-          print(data);
-        });
-      } else
-        setState(() {
-          dataExists = false;
-          shopName = address = shopkeeperName = vaccine = "";
-        });
-    });
+        if (snapshot.exists) {
+          setState(() {
+            dataExists = true;
+            shopName = data['shopName'].toString();
+            shopkeeperName = data['shopkeeperName'].toString();
+            address = data['address'].toString();
+            vaccine = data['vaccineStatus'].toString();
+            print(data);
+          });
+        } else
+          setState(() {
+            dataExists = false;
+            shopName = address = shopkeeperName = vaccine = "";
+          });
+      });
+      check++;
+    }
 
     return Scaffold(
       appBar: AppBar(
