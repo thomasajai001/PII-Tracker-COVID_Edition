@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:pii_tracker_covid_edition/flutterfire/shopkeeper.dart';
+import '../../flutterfire/shopkeeper.dart';
 import '../../flutterfire/auth.dart';
 
 class ShopkeeperHomePage extends StatefulWidget {
@@ -41,31 +41,30 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      String uid = FirebaseAuth.instance.currentUser.uid;
-      DocumentReference documentReference =
-          FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
+    String uid = FirebaseAuth.instance.currentUser.uid;
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
 
-      FirebaseFirestore.instance.runTransaction((transaction) async {
-        DocumentSnapshot snapshot = await transaction.get(documentReference);
-        Map<String, Object> data = snapshot.data();
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+      Map<String, Object> data = snapshot.data();
 
-        if (snapshot.exists) {
-          setState(() {
-            dataExists = true;
-            shopName = data['shopName'].toString();
-            shopkeeperName = data['shopkeeperName'].toString();
-            address = data['address'].toString();
-            vaccine = data['vaccineStatus'].toString();
-            print(data);
-          });
-        } else
-          setState(() {
-            dataExists = false;
-            shopName = address = shopkeeperName = vaccine = "";
-          });
-      });
+      if (snapshot.exists) {
+        setState(() {
+          dataExists = true;
+          shopName = data['shopName'].toString();
+          shopkeeperName = data['shopkeeperName'].toString();
+          address = data['address'].toString();
+          vaccine = data['vaccineStatus'].toString();
+          print(data);
+        });
+      } else
+        setState(() {
+          dataExists = false;
+          shopName = address = shopkeeperName = vaccine = "";
+        });
     });
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Shopkeeper Page"),

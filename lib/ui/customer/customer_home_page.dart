@@ -93,32 +93,30 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 
   Widget build(BuildContext context) {
-    setState(() {
-      userId = ModalRoute.of(context).settings.arguments;
+    userId = ModalRoute.of(context).settings.arguments;
 
-      email = userId['email'];
-      firestore
-          .collection("users")
-          .doc(userId['id'])
-          .get()
-          .then((DocumentSnapshot documentSnapshot) {
-        if (documentSnapshot.exists) {
-          setState(() {
-            datas = documentSnapshot.data();
-            list = datas.values.toList();
-            print(list);
-            imageUrl = list[2];
-            name = list[3];
-            address = list[1];
-            vaccine = list[0];
-            dataFilled = true;
-          });
-        } else {
-          setState(() {
-            dataFilled = false;
-          });
-        }
-      });
+    email = userId['email'];
+    firestore
+        .collection("users")
+        .doc(userId['id'])
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          datas = documentSnapshot.data();
+          list = datas.values.toList();
+          print(list);
+          imageUrl = list[2];
+          name = list[3];
+          address = list[1];
+          vaccine = list[0];
+          dataFilled = true;
+        });
+      } else {
+        setState(() {
+          dataFilled = false;
+        });
+      }
     });
 
     return (!dataFilled)

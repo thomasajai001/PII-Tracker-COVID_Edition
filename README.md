@@ -1,4 +1,4 @@
-# pii_tracker_covid_edition
+# pii
 
 A new Flutter project.
 
