@@ -39,7 +39,7 @@ class _QrGeneratorState extends State<QrGenerator> {
                     data: datas,
                     version: QrVersions.auto,
                     size: 320,
-                    gapless: false,
+                    gapless: true,
                   ),
                 ],
               ),

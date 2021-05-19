@@ -7,6 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
+
 // import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -44,8 +45,40 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
 
   Future<void> scan() async {
     String codeSanner = await BarcodeScanner.scan();
-    shopId = codeSanner;
+    shopId = codeSanner.toString();
     print(shopId);
+    try {
+      var obj = [shopId];
+      String customerUid = FirebaseAuth.instance.currentUser.uid;
+      FirebaseFirestore.instance
+          .collection("users")
+          .doc(customerUid)
+          .update({"visitedStores": FieldValue.arrayUnion(obj)});
+
+      var snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(customerUid)
+          .get();
+      print("<><><><><><><>><><>");
+      print(snapshot.data());
+      print("<><><><><><><>><><>");
+
+      var custObj = [customerUid.toString()];
+      FirebaseFirestore.instance
+          .collection("Shopkeeper")
+          .doc(shopId)
+          .update({"customers": FieldValue.arrayUnion(custObj)});
+
+      var snapshotOfShopkeeper = await FirebaseFirestore.instance
+          .collection("Shopkeeper")
+          .doc(shopId)
+          .get();
+      print("<><><><><><><>><><>");
+      print(snapshotOfShopkeeper.data());
+      print("<><><><><><><>><><>");
+    } catch (e) {
+      print("<>\n<><>><><><\n\n${e.toString()}\n\n<><><><><>\n<");
+    }
   }
 
   void add() {
@@ -79,11 +112,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           datas = documentSnapshot.data();
           list = datas.values.toList();
           print(list);
-          imageUrl = list[2];
-          name = list[3];
-          address = list[1];
-          vaccine = list[0];
+          // imageUrl = list[2];
+          imageUrl = datas['imageUrl'].toString();
+          // name = list[3];
+          name = datas['name'].toString();
+          // address = list[1];
+          address = datas['address'].toString();
+          // vaccine = list[0];
+          vaccine = datas['vaccine'].toString();
           dataFilled = true;
+          print("$imageUrl   $name    $address     $vaccine");
         });
       } else {
         setState(() {
@@ -140,11 +178,16 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           datas = documentSnapshot.data();
           list = datas.values.toList();
           print(list);
-          imageUrl = list[2];
-          name = list[3];
-          address = list[1];
-          vaccine = list[0];
+          // imageUrl = list[2];
+          imageUrl = datas['imageUrl'];
+          // name = list[3];
+          name = datas['name'];
+          // address = list[1];
+          address = datas['address'];
+          // vaccine = list[0];
+          vaccine = datas['vaccine'];
           dataFilled = true;
+          print("$imageUrl   $name    $address     $vaccine");
         });
       } else {
         setState(() {
@@ -287,6 +330,18 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     onPressed: scan,
                     icon: Icon(Icons.camera_alt),
                     label: Text("Scan QR"),
+                  ),
+                  SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                    ))),
+                    onPressed: () {},
+                    icon: Icon(Icons.list_rounded),
+                    label: Text("View visited shops"),
                   ),
                   SizedBox(height: 30),
                   ElevatedButton(
