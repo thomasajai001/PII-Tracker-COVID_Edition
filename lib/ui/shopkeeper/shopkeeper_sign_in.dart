@@ -72,19 +72,31 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
             children: [
               TextField(
                 decoration: InputDecoration(
-                  errorText: '$errorEmail',
+                  labelText: "Email",
+                  errorText: errorEmail == " " ? null : '$errorEmail',
                   hintText: "something@email.com",
                 ),
                 controller: emailC,
               ),
               TextField(
                 decoration: InputDecoration(
-                    hintText: "password", errorText: '$errorPass '),
+                  labelText: "Password",
+                  hintText: "password",
+                  errorText: errorPass == " " ? null : '$errorPass',
+                ),
                 controller: pswdC,
+              ),
+              SizedBox(
+                height: 25,
               ),
               ElevatedButton(
                 onPressed: login,
-                child: Text("Login"),
+                child: Text(
+                  "Login",
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                ),
               ),
               SizedBox(
                 height: 30,
