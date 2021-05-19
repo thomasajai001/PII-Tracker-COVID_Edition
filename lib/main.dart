@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './qr/qrGenerator.dart';
 import 'ui/customer/customer_sign_in.dart';
 import './ui/user_register.dart';
 import 'ui/select_user_type.dart';
@@ -34,6 +35,7 @@ class _MyAppState extends State<MyApp> {
         '/customerHomePage': (context) => CustomerHomePage(),
         '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
         '/imageUpload': (context) => ImageHandler(),
+        '/qrGenerator': (context) => QrGenerator(),
       },
     );
   }

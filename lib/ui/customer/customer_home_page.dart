@@ -40,10 +40,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   DateTime date;
   String address = "";
   String vaccine = "";
+  String shopId;
+
   Future<void> scan() async {
     String codeSanner = await BarcodeScanner.scan();
-    String sample = codeSanner;
-    print(sample);
+    shopId = codeSanner;
+    print(shopId);
   }
 
   void add() {
