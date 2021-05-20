@@ -241,7 +241,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
             ))
         : Scaffold(
             appBar: AppBar(
-              title: Text("Customer page"),
+              title: Text("ShopKeeper page"),
               centerTitle: true,
             ),
             drawer: Drawer(
@@ -269,10 +269,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                     leading: Icon(Icons.update_sharp),
                     title: Text("Update Fields"),
                     onTap: () {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => CustomerUpdate()));
+                      Navigator.pushNamed(context, '/shopkeeperUpdate');
                     },
                   ),
                   ListTile(

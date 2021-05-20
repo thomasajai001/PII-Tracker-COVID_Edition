@@ -12,6 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 bool defaultData = false;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage _storage;
+User shopUser;
 
 class ShopkeeperUpdate extends StatefulWidget {
   @override
@@ -26,59 +27,57 @@ Map datas = {};
 var list = [];
 
 class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
-  TextEditingController nameC = TextEditingController();
+  TextEditingController shopNameC = TextEditingController();
+  TextEditingController shopkeeperNameC = TextEditingController();
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
-  int check = 0;
-  String n = "";
-  String a = "";
-  String u = "";
-  String v = "";
-  String i = " ";
-  String uid = "";
-  String imageUrl = " ";
-  String name = " ";
-  String body = " ";
-  String email = "";
+  Map datas = {};
+  List list = [];
+  String shopName, shopkeeperName, address, vaccine, email, uid;
+  String sN, skName, a, v;
   DateTime date;
-  String address = "";
-  String vaccine = "";
-  String shopkeeperUid;
+  String i, imageUrl;
+  int check = 0;
   bool imageChanged = false;
+  bool dataExists = false;
+  String u = "";
 
   void cancel() {
-    Navigator.pushReplacementNamed(context, '/customerHomePage');
+    Navigator.pushReplacementNamed(context, '/shopkeeperHomePage');
   }
 
   void update() {
-    n = nameC.text.toString();
-    a = addressC.text.toString();
-    v = vaccineC.text.toString();
+    shopName = shopNameC.text.toString();
+    shopkeeperName = shopkeeperNameC.text.toString();
+    address = addressC.text.toString();
+    vaccine = vaccineC.text.toString();
 
-    email = userId.email;
-    date = userId.metadata.lastSignInTime;
+    // email = shopUser.email;
+    // date = shopUser.metadata.lastSignInTime;
 
-    print(date);
+    // print(date);
     if (imageChanged) {
       print("Changing even when not pressed");
-      CollectionReference users = firestore.collection('users');
+      CollectionReference users = firestore.collection('Shopkeeper');
       users.doc(uid).update({
-        'name': n,
-        'address': a,
-        'vaccine': v,
+        'shopName': shopName,
+        'shopkeeperName': shopkeeperName,
+        'address': address,
         'imageUrl': i,
+        'vaccine': vaccine,
       }).then((value) => print("added"));
     } else {
-      CollectionReference users = firestore.collection('users');
+      CollectionReference users = firestore.collection('Shopkeeper');
       users.doc(uid).update({
-        'name': n,
-        'address': a,
-        'vaccine': v,
+        'shopName': shopName,
+        'shopkeeperName': shopkeeperName,
+        'address': address,
         'imageUrl': u,
+        'vaccine': vaccine,
       }).then((value) => print("added"));
     }
 
-    Navigator.pushReplacementNamed(context, '/customerHomePage');
+    Navigator.pushReplacementNamed(context, '/shopkeeperHomePage');
   }
 
   void imageUpload() async {
@@ -122,12 +121,13 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
     uid = userId.uid;
 
     firestore
-        .collection("users")
+        .collection("Shopkeeper")
         .doc(uid)
         .get()
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
+          defaultData = true;
           email = userId.email;
           datas = documentSnapshot.data();
           list = datas.values.toList();
@@ -135,15 +135,13 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
           // imageUrl = list[2];
           imageUrl = datas['imageUrl'];
           u = imageUrl;
-          // name = list[3];
-          name = datas['name'];
-          // address = list[1];
-          address = datas['address'];
-          // vaccine = list[0];
-          vaccine = datas['vaccine'];
+          sN = datas['shopName'];
+          a = datas['address'];
+          skName = datas['shopkeeperName'];
+          v = datas['vaccine'];
           print(imageUrl);
-          defaultData = true;
-          print("Details  $imageUrl   $name    $address     $vaccine");
+
+          // print("Details  $imageUrl   $name    $address     $vaccine");
         });
       }
     });
@@ -153,7 +151,7 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
     return (defaultData != false)
         ? Scaffold(
             appBar: AppBar(
-              title: Text("Customer Update"),
+              title: Text("Shopkeeper Update"),
               centerTitle: true,
             ),
             body: SafeArea(
@@ -165,21 +163,27 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
                     children: [
                       TextField(
                         decoration: InputDecoration(
+                          hintText: "Shop Name",
+                        ),
+                        controller: shopNameC..text = sN,
+                      ),
+                      TextField(
+                        decoration: InputDecoration(
                           hintText: "Name",
                         ),
-                        controller: nameC..text = name,
+                        controller: shopkeeperNameC..text = skName,
                       ),
                       TextField(
                         decoration: InputDecoration(
                           hintText: "Address",
                         ),
-                        controller: addressC..text = address,
+                        controller: addressC..text = a,
                       ),
                       TextField(
                         decoration: InputDecoration(
                           hintText: "Vaccine Status",
                         ),
-                        controller: vaccineC..text = vaccine,
+                        controller: vaccineC..text = v,
                       ),
                       ElevatedButton(
                         onPressed: imageUpload,
@@ -212,7 +216,7 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
           )
         : Scaffold(
             appBar: AppBar(
-              title: Text("Customer Update"),
+              title: Text("Shopkeeper Update"),
               centerTitle: true,
             ),
             body: SpinKitRotatingCircle(color: Colors.blue),

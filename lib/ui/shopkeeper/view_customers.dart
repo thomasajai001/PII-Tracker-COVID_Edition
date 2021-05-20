@@ -115,7 +115,7 @@ class _ViewCustomersState extends State<ViewCustomers> {
                                 ),
                                 SizedBox(height: 15),
                                 Text(
-                                  "       VaccineStaus  :\n      ${e['data']['vaccine']}",
+                                  "       VaccineStaus  :\n     ${e['data']['vaccine']}",
                                   style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold),
