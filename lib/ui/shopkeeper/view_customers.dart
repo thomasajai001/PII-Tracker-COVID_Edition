@@ -60,62 +60,84 @@ class _ViewCustomersState extends State<ViewCustomers> {
       appBar: AppBar(
         title: Text("Customer list"),
       ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height * 0.9,
-        child: ListView(
-          children: customerData.map((e) {
-            return Container(
-              height: 160,
-              decoration: BoxDecoration(
-                color: Colors.blue[100],
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: EdgeInsets.all(15),
-              padding: EdgeInsets.all(15),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: customerData.isEmpty
+          ? Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(e['data']['imageUrl']),
+                  Text(
+                    "No customers yet!",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  SizedBox(
+                    height: 35,
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.55,
-                    child: Column(
-                      children: <Widget>[
-                        Text(
-                          "Name : ${e['data']['name']}",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          "Vaccine Staus: ${e['data']['vaccine']}",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          "Address: ${e['data']['address']}",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(height: 15),
-                        Text(
-                          "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
-                        )
-                      ],
+                    height: 300,
+                    child: Image.network(
+                      'https://firebasestorage.googleapis.com/v0/b/pii-test-a8b13.appspot.com/o/waiting.png?alt=media&token=842495c6-4ebe-4236-9d46-1a7a08aae954',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ],
               ),
-            );
-          }).toList(),
-        ),
-      ),
+            )
+          : Container(
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height * 0.9,
+              child: ListView(
+                children: customerData.map((e) {
+                  return Container(
+                    height: 160,
+                    decoration: BoxDecoration(
+                      color: Colors.blue[100],
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    margin: EdgeInsets.all(15),
+                    padding: EdgeInsets.all(15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundImage: NetworkImage(e['data']['imageUrl']),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                "Name : ${e['data']['name']}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                "Vaccine Staus: ${e['data']['vaccine']}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                "Address: ${e['data']['address']}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 15),
+                              Text(
+                                "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
     );
   }
 }
