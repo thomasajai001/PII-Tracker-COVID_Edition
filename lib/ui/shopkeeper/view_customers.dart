@@ -104,32 +104,38 @@ class _ViewCustomersState extends State<ViewCustomers> {
                         ),
                         Container(
                           width: MediaQuery.of(context).size.width * 0.55,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                "Name : ${e['data']['name']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Vaccine Staus: ${e['data']['vaccine']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Address: ${e['data']['address']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              )
-                            ],
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: <Widget>[
+                                Text(
+                                  "Name : ${e['data']['name']}",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 15),
+                                Text(
+                                  "       VaccineStaus  :\n      ${e['data']['vaccine']}",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 15),
+                                Text(
+                                  "Address: ${e['data']['address']}",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(height: 15),
+                                Text(
+                                  "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ],

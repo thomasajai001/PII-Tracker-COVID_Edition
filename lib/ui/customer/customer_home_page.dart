@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pii/ui/customer/customerUpdate.dart';
 import '../../flutterfire/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -175,6 +176,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
+          email = userId.email;
           datas = documentSnapshot.data();
           list = datas.values.toList();
           print(list);
@@ -187,7 +189,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           // vaccine = list[0];
           vaccine = datas['vaccine'];
           dataFilled = true;
-          print("$imageUrl   $name    $address     $vaccine");
+          print("Details$imageUrl   $name    $address     $vaccine");
         });
       } else {
         setState(() {
@@ -243,7 +245,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       ElevatedButton(
                         onPressed: () {
                           customerSignout();
-                          Navigator.pushNamed(context, '/registration');
+                          Navigator.pushReplacementNamed(
+                              context, '/registration');
                         },
                         child: Text("logout"),
                       ),
@@ -257,6 +260,48 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
             appBar: AppBar(
               title: Text("Customer page"),
               centerTitle: true,
+            ),
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text(name),
+                    accountEmail: Text(email),
+                    currentAccountPicture: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(imageUrl),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.list_rounded),
+                    title: Text("View visited shops"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => VisitedShops()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.update_sharp),
+                    title: Text("Update Fields"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CustomerUpdate()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text("Logout"),
+                    onTap: () {
+                      customerSignout();
+                      Navigator.pushNamed(context, '/selectUserType');
+                    },
+                  ),
+                ],
+              ),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -290,42 +335,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     title: Text("Vaccine Status"),
                     subtitle: Text(vaccine),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   ElevatedButton.icon(
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                    onPressed: scan,
                     icon: Icon(Icons.camera_alt),
                     label: Text("Scan QR"),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VisitedShops()));
-                    },
-                    icon: Icon(Icons.list_rounded),
-                    label: Text("View visited shops"),
-                  ),
-                  SizedBox(height: 30),
-                  ElevatedButton(
-                    onPressed: () {
-                      customerSignout();
-                      Navigator.pushNamed(context, '/selectUserType');
-                    },
-                    child: Text("logout"),
+                    onPressed: scan,
                   ),
                 ],
               ),

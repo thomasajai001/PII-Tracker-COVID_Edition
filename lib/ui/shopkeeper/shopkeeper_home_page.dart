@@ -119,6 +119,10 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   void initState() {
     super.initState();
     shopUser = FirebaseAuth.instance.currentUser;
+    setState(() {
+      email = shopUser.email;
+    });
+
     uid = shopUser.uid;
     firestore
         .collection("Shopkeeper")
@@ -175,13 +179,13 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     //   check++;
     // }
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Shopkeeper Page"),
-        centerTitle: true,
-      ),
-      body: (!dataExists)
-          ? SafeArea(
+    return (!dataExists)
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text("Shopkeeper Page"),
+              centerTitle: true,
+            ),
+            body: SafeArea(
               child: Container(
                 margin: EdgeInsets.all(15),
                 child: SingleChildScrollView(
@@ -234,8 +238,55 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                   ),
                 ),
               ),
-            )
-          : SingleChildScrollView(
+            ))
+        : Scaffold(
+            appBar: AppBar(
+              title: Text("Customer page"),
+              centerTitle: true,
+            ),
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  UserAccountsDrawerHeader(
+                    accountName: Text(skName),
+                    accountEmail: Text(email),
+                    currentAccountPicture: CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(imageUrl),
+                    ),
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.list_rounded),
+                    title: Text("View customers"),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewCustomers()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.update_sharp),
+                    title: Text("Update Fields"),
+                    onTap: () {
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => CustomerUpdate()));
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.logout),
+                    title: Text("Logout"),
+                    onTap: () {
+                      customerSignout();
+                      Navigator.pushNamed(context, '/selectUserType');
+                    },
+                  ),
+                ],
+              ),
+            ),
+            body: SingleChildScrollView(
               child: Column(
                 children: [
                   SizedBox(height: 20),
@@ -290,33 +341,9 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                     label: Text("Generate QR"),
                   ),
                   SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewCustomers()));
-                    },
-                    icon: Icon(Icons.list_rounded),
-                    label: Text("View customers"),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      customerSignout();
-                      Navigator.pushNamed(context, '/selectUserType');
-                    },
-                    child: Text("logout"),
-                  ),
                 ],
               ),
             ),
-    );
+          );
   }
 }

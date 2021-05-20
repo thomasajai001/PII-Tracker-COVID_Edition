@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pii/ui/customer/customerUpdate.dart';
+import 'package:pii/ui/shopkeeper/shopkeeperUpdate.dart';
 import './qr/qrGenerator.dart';
 import 'ui/customer/customer_sign_in.dart';
 import './ui/user_register.dart';
@@ -36,6 +38,8 @@ class _MyAppState extends State<MyApp> {
         '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
         '/imageUpload': (context) => ImageHandler(),
         '/qrGenerator': (context) => QrGenerator(),
+        '/customerUpdate': (context) => CustomerUpdate(),
+        '/shopkeeperUpdate': (context) => ShopkeeperUpdate(),
       },
     );
   }
