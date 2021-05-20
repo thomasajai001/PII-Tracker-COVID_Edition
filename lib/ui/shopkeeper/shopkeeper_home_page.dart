@@ -52,9 +52,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       'imageUrl': i,
       'vaccine': vaccine,
     }).then((value) => print("added"));
-    setState(() {
-      dataExists = true;
-    });
+    setState(() {});
     firestore
         .collection("Shopkeeper")
         .doc(uid)
