@@ -9,10 +9,7 @@ class VisitedShops extends StatefulWidget {
 }
 
 class _VisitedShopsState extends State<VisitedShops> {
-  List visitedStoresList, shopkeeperData = [];
-  String customerUid, shopkeeperUid;
-
-  Map customerData;
+  List shopkeeperData = [];
 
   @override
   void initState() {
@@ -21,30 +18,28 @@ class _VisitedShopsState extends State<VisitedShops> {
   }
 
   Future getVisitedStoresInfo() async {
+    Map customerData;
+
     try {
-      customerUid = FirebaseAuth.instance.currentUser.uid;
+      var customerUid = FirebaseAuth.instance.currentUser.uid;
 
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection("users")
           .doc(customerUid)
           .get();
-      setState(() {
-        customerData = documentSnapshot.data();
-      });
+      customerData = documentSnapshot.data();
     } catch (e) {
       print(e.toString());
     }
     print("hello");
     print(customerData['visitedStores'][0].toString());
-    setState(() {
-      visitedStoresList = customerData['visitedStores'];
-    });
+    var visitedStoresList = customerData['visitedStores'];
 
     visitedStoresList.forEach((visitedStore) async {
       print("the element is " + visitedStore.toString());
       try {
-        shopkeeperUid = visitedStore['shopkeeperUid'].toString();
-        var time = visitedStore['time'].toString();
+        var shopkeeperUid = visitedStore['shopkeeperUid'].toString();
+        var time = visitedStore['time'];
         print('shopkeeperUid is ' + shopkeeperUid.toString());
         DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
             .collection("Shopkeeper")
@@ -81,7 +76,7 @@ class _VisitedShopsState extends State<VisitedShops> {
               padding: EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   CircleAvatar(
                     radius: 50,
                     backgroundImage: NetworkImage(e['data']['imageUrl']),
@@ -89,7 +84,7 @@ class _VisitedShopsState extends State<VisitedShops> {
                   Container(
                     width: MediaQuery.of(context).size.width * 0.55,
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Text(
                           "Shop : ${e['data']['shopName']}",
                           style: TextStyle(
@@ -110,15 +105,8 @@ class _VisitedShopsState extends State<VisitedShops> {
                         SizedBox(height: 15),
                         Text(
                           "Time: " +
-                              DateFormat.MMMd()
-                                  .add_jm()
-                                  .format(DateTime.fromMillisecondsSinceEpoch(
-                                      int.parse(e['time']
-                                              .toString()
-                                              .split(',')[0]
-                                              .split('=')[1]) *
-                                          1000))
-                                  .toString(),
+                              DateFormat.MMMd().add_jm().format(DateTime.parse(
+                                  e['time'].toDate().toString())),
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         )

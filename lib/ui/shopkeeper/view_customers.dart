@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ViewCustomers extends StatefulWidget {
   @override
@@ -8,10 +9,7 @@ class ViewCustomers extends StatefulWidget {
 }
 
 class _ViewCustomersState extends State<ViewCustomers> {
-  String shopkeeperUid;
-  List customers, customerData = [];
-
-  Map shopkeeperData;
+  List customerData = [];
 
   @override
   void initState() {
@@ -20,35 +18,35 @@ class _ViewCustomersState extends State<ViewCustomers> {
   }
 
   Future getCustomers() async {
+    Map shopkeeperData;
+
     try {
-      shopkeeperUid = FirebaseAuth.instance.currentUser.uid;
+      var shopkeeperUid = FirebaseAuth.instance.currentUser.uid;
 
       DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
           .collection("Shopkeeper")
           .doc(shopkeeperUid)
           .get();
-      setState(() {
-        shopkeeperData = documentSnapshot.data();
-      });
+      shopkeeperData = documentSnapshot.data();
     } catch (e) {
       print(e.toString());
     }
 
     print(shopkeeperData['customers'][0].toString());
-    setState(() {
-      customers = shopkeeperData['customers'];
-    });
 
-    customers.forEach((element) async {
-      print("the element is " + element);
+    var customersList = shopkeeperData['customers'];
+
+    customersList.forEach((customer) async {
       try {
+        var customerUid = customer['customerUid'].toString();
+        var time = customer['time'];
         DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
             .collection('users')
-            .doc(element)
+            .doc(customerUid)
             .get();
         Map data = documentSnapshot.data();
         setState(() {
-          customerData.add(data);
+          customerData.add({'data': data, 'time': time});
         });
       } catch (e) {
         print(e.toString());
@@ -68,7 +66,7 @@ class _ViewCustomersState extends State<ViewCustomers> {
         child: ListView(
           children: customerData.map((e) {
             return Container(
-              height: 130,
+              height: 160,
               decoration: BoxDecoration(
                 color: Colors.blue[100],
                 borderRadius: BorderRadius.circular(10),
@@ -77,29 +75,35 @@ class _ViewCustomersState extends State<ViewCustomers> {
               padding: EdgeInsets.all(15),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
+                children: <Widget>[
                   CircleAvatar(
                     radius: 50,
-                    backgroundImage: NetworkImage(e['imageUrl']),
+                    backgroundImage: NetworkImage(e['data']['imageUrl']),
                   ),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.611,
+                    width: MediaQuery.of(context).size.width * 0.55,
                     child: Column(
-                      children: [
+                      children: <Widget>[
                         Text(
-                          "Name : ${e['name']}",
+                          "Name : ${e['data']['name']}",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 15),
                         Text(
-                          "Vaccine Staus: ${e['vaccine']}",
+                          "Vaccine Staus: ${e['data']['vaccine']}",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         ),
                         SizedBox(height: 15),
                         Text(
-                          "Address: ${e['address']}",
+                          "Address: ${e['data']['address']}",
+                          style: TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 15),
+                        Text(
+                          "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
                           style: TextStyle(
                               fontSize: 18, fontWeight: FontWeight.bold),
                         )
