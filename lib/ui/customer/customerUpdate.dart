@@ -60,7 +60,6 @@ class _CustomerUpdateState extends State<CustomerUpdate> {
 
     print(date);
     if (imageChanged) {
-      print("Changing even when not pressed");
       CollectionReference users = firestore.collection('users');
       users.doc(uid).update({
         'name': n,
@@ -82,7 +81,6 @@ class _CustomerUpdateState extends State<CustomerUpdate> {
   }
 
   void imageUpload() async {
-    print("uploading even when not uploaded");
     final _pickr = ImagePicker();
     PickedFile image;
 //handle permission

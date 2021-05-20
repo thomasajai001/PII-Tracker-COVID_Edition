@@ -8,7 +8,7 @@ import 'ui/select_user_type.dart';
 import 'ui/customer/customer_home_page.dart';
 import 'flutterfire/imageHandler.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import './ui/customer/customerGoogleHomePage.dart';
 import 'ui/shopkeeper/shopkeeper_sign_in.dart';
 import 'ui/shopkeeper/shopkeeper_home_page.dart';
 
@@ -35,6 +35,7 @@ class _MyAppState extends State<MyApp> {
         '/customerSignIn': (context) => CustomerSignIn(),
         '/shopkeeperSignIn': (context) => ShopkeeperSignIn(),
         '/customerHomePage': (context) => CustomerHomePage(),
+        '/customerGoogleHomePage': (context) => CustomerGoogleHomePage(),
         '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
         '/imageUpload': (context) => ImageHandler(),
         '/qrGenerator': (context) => QrGenerator(),
