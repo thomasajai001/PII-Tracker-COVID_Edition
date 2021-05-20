@@ -42,14 +42,17 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   DateTime date;
   String address = "";
   String vaccine = "";
-  String shopId;
+  String shopkeeperUid;
 
   Future<void> scan() async {
     String codeSanner = await BarcodeScanner.scan();
-    shopId = codeSanner.toString();
-    print(shopId);
+    shopkeeperUid = codeSanner.toString();
+    var time = DateTime.now();
+    print(shopkeeperUid);
     try {
-      var obj = [shopId];
+      var obj = [
+        {'shopkeeperUid': shopkeeperUid, 'time': time}
+      ];
       String customerUid = FirebaseAuth.instance.currentUser.uid;
       FirebaseFirestore.instance
           .collection("users")
@@ -64,15 +67,17 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       print(snapshot.data());
       print("<><><><><><><>><><>");
 
-      var custObj = [customerUid.toString()];
+      var custObj = [
+        {'customerUid': customerUid.toString(), 'time': time}
+      ];
       FirebaseFirestore.instance
           .collection("Shopkeeper")
-          .doc(shopId)
+          .doc(shopkeeperUid)
           .update({"customers": FieldValue.arrayUnion(custObj)});
 
       var snapshotOfShopkeeper = await FirebaseFirestore.instance
           .collection("Shopkeeper")
-          .doc(shopId)
+          .doc(shopkeeperUid)
           .get();
       print("<><><><><><><>><><>");
       print(snapshotOfShopkeeper.data());
@@ -111,15 +116,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       if (documentSnapshot.exists) {
         setState(() {
           datas = documentSnapshot.data();
-          list = datas.values.toList();
-          print(list);
-          // imageUrl = list[2];
           imageUrl = datas['imageUrl'].toString();
-          // name = list[3];
           name = datas['name'].toString();
-          // address = list[1];
           address = datas['address'].toString();
-          // vaccine = list[0];
           vaccine = datas['vaccine'].toString();
           dataFilled = true;
           print("$imageUrl   $name    $address     $vaccine");
