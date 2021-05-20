@@ -1,4 +1,4 @@
-package com.example.pii_tracker_covid_edition
+package com.example.pii
 
 import io.flutter.embedding.android.FlutterActivity
 

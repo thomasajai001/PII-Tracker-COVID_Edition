@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "527747148203",
+    "project_id": "pii-test-a8b13",
+    "storage_bucket": "pii-test-a8b13.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:527747148203:android:111ac1b1e5a23ee0eb0aee",
+        "android_client_info": {
+          "package_name": "com.example.pii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "527747148203-66ps9ddkhe0ige93a1uetuah4co5gum1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKproKDZpRGIVv4pFn0PYK2uPAHGumxxA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "527747148203-66ps9ddkhe0ige93a1uetuah4co5gum1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
