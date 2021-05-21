@@ -94,10 +94,9 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
         var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
         var url = await snapshot.ref.getDownloadURL();
 
-        setState(() {
-          imageChanged = true;
-          i = url;
-        });
+        imageChanged = true;
+        i = url;
+
         //   Fluttertoast.showToast(
         //       msg: "Upload Complete",
         //       toastLength: Toast.LENGTH_SHORT,

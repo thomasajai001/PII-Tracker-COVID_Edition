@@ -56,7 +56,7 @@ class _CustomerLaunchPageState extends State<CustomerLaunchPage> {
           ),
           SignInButton(
             Buttons.Google,
-            text: "Sign up with Google",
+            text: "Sign in with Google",
             onPressed: () async {
               User u = await googleSignIn();
               Navigator.pushNamed(context, '/customerGoogleHomePage');

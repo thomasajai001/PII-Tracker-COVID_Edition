@@ -11,6 +11,7 @@ import 'package:firebase_core/firebase_core.dart';
 import './ui/customer/customerGoogleHomePage.dart';
 import 'ui/shopkeeper/shopkeeper_sign_in.dart';
 import 'ui/shopkeeper/shopkeeper_home_page.dart';
+import './ui/shopkeeper/shopkeeperGoogleHomePage.dart';
 
 void main() {
   runApp(MyApp());
@@ -37,6 +38,7 @@ class _MyAppState extends State<MyApp> {
         '/customerHomePage': (context) => CustomerHomePage(),
         '/customerGoogleHomePage': (context) => CustomerGoogleHomePage(),
         '/shopkeeperHomePage': (context) => ShopkeeperHomePage(),
+        '/shopkeeperGoogleHomePage': (context) => ShopkeeperGoogleHomePage(),
         '/imageUpload': (context) => ImageHandler(),
         '/qrGenerator': (context) => QrGenerator(),
         '/customerUpdate': (context) => CustomerUpdate(),
