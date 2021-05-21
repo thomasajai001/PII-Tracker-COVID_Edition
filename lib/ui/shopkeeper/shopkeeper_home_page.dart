@@ -1,3 +1,4 @@
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,29 +9,26 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import './view_customers.dart';
 
-FirebaseStorage _storage;
-FirebaseFirestore firestore = FirebaseFirestore.instance;
-User shopUser;
-
 class ShopkeeperHomePage extends StatefulWidget {
   @override
   _ShopkeeperHomePageState createState() => _ShopkeeperHomePageState();
 }
 
 class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  User shopkeeper;
   TextEditingController shopNameC = TextEditingController();
   TextEditingController shopkeeperNameC = TextEditingController();
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
   Map datas = {};
-  List list = [];
-  String shopName, shopkeeperName, address, vaccine, email, uid;
-  String sN, skName, a, v;
+  String email, uid;
+  String shopName, shopkeeperName, address, vaccine;
   DateTime date;
-  String i, imageUrl;
+  String imageUrl;
   int check = 0;
 
-  bool dataExists = false;
+  bool dataExists = false, imageExists = false, imageLoading = false;
 
   void add() {
     shopName = shopNameC.text.toString();
@@ -38,90 +36,76 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     address = addressC.text.toString();
     vaccine = vaccineC.text.toString();
     setState(() {
-      email = shopUser.email;
-      date = shopUser.metadata.lastSignInTime;
+      email = shopkeeper.email;
+      date = shopkeeper.metadata.lastSignInTime;
     });
 
-    print(date);
-
     CollectionReference users = firestore.collection('Shopkeeper');
-    users.doc(uid).set({
-      'shopName': shopName,
-      'shopkeeperName': shopkeeperName,
-      'address': address,
-      'imageUrl': i,
-      'vaccine': vaccine,
-    }).then((value) => print("added"));
-    setState(() {});
-    firestore
-        .collection("Shopkeeper")
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        setState(() {
-          email = shopUser.email;
-          date = shopUser.metadata.lastSignInTime;
-          datas = documentSnapshot.data();
-          list = datas.values.toList();
-          print(list);
-          imageUrl = datas['imageUrl'];
-          sN = datas['shopName'];
-          a = datas['address'];
-          skName = datas['shopkeeperName'];
-          v = datas['vaccine'];
-          dataExists = true;
-        });
-      } else {
-        setState(() {
-          dataExists = false;
-        });
-      }
+    FirebaseStorage.instance
+        .ref('shopkeeper/$uid')
+        .getDownloadURL()
+        .then((imageUrl) {
+      users.doc(uid).set({
+        'shopName': shopName,
+        'shopkeeperName': shopkeeperName,
+        'address': address,
+        'imageUrl': imageUrl,
+        'vaccine': vaccine,
+      });
+    });
+
+    setState(() {
+      dataExists = true;
     });
   }
 
   void imageUpload() async {
     final _pickr = ImagePicker();
     PickedFile image;
-//handle permission
     var permissionstatus = await Permission.photos.request();
     if (permissionstatus.isGranted) {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
-        _storage = FirebaseStorage.instance;
-        var snapshot =
-            _storage.ref().child('shop/images/').putFile(file).snapshot;
-        var url = await snapshot.ref.getDownloadURL();
-        print(url);
+        FirebaseStorage.instance.ref('shopkeeper/$uid').putFile(file);
+        var downloadUrl = await FirebaseStorage.instance
+            .ref('shopkeeper/$uid')
+            .getDownloadURL();
         setState(() {
-          i = url;
+          imageUrl = downloadUrl;
         });
-        //   Fluttertoast.showToast(
-        //       msg: "Upload Complete",
-        //       toastLength: Toast.LENGTH_SHORT,
-        //       gravity: ToastGravity.CENTER,
-        //       timeInSecForIosWeb: 1,
-        //       backgroundColor: Colors.grey[400],
-        //       textColor: Colors.white,
-        //       fontSize: 16.0);
       }
     } else {
       print("Grant permission");
     }
-//select image
-// upload to storage
   }
 
   @override
   void initState() {
     super.initState();
-    shopUser = FirebaseAuth.instance.currentUser;
+    shopkeeper = FirebaseAuth.instance.currentUser;
     setState(() {
-      email = shopUser.email;
+      email = shopkeeper.email;
     });
 
-    uid = shopUser.uid;
+    FirebaseFirestore.instance
+        .collection("Shopkeeper")
+        .doc(FirebaseAuth.instance.currentUser.uid)
+        .get()
+        .then((documentSnapshot) {
+      Map data = documentSnapshot.data();
+      if (data['imageUrl'] == null) {
+        setState(() {
+          imageExists = false;
+        });
+      } else {
+        setState(() {
+          imageExists = true;
+        });
+      }
+    });
+
+    uid = shopkeeper.uid;
     firestore
         .collection("Shopkeeper")
         .doc(uid)
@@ -130,13 +114,12 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       if (documentSnapshot.exists) {
         setState(() {
           datas = documentSnapshot.data();
-          list = datas.values.toList();
 
           imageUrl = datas['imageUrl'];
-          sN = datas['shopName'];
-          a = datas['address'];
-          skName = datas['shopkeeperName'];
-          v = datas['vaccine'];
+          shopName = datas['shopName'];
+          address = datas['address'];
+          shopkeeperName = datas['shopkeeperName'];
+          vaccine = datas['vaccine'];
           dataExists = true;
         });
       } else {
@@ -149,34 +132,15 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    print(list);
-    // if (check == 0) {
-    //   String uid = FirebaseAuth.instance.currentUser.uid;
-    //   DocumentReference documentReference =
-    //       FirebaseFirestore.instance.collection('Shopkeeper').doc(uid);
-
-    //   FirebaseFirestore.instance.runTransaction((transaction) async {
-    //     DocumentSnapshot snapshot = await transaction.get(documentReference);
-    //     Map<String, Object> data = snapshot.data();
-
-    //     if (snapshot.exists) {
-    //       setState(() {
-    //         dataExists = true;
-    //         shopName = data['shopName'].toString();
-    //         shopkeeperName = data['shopkeeperName'].toString();
-    //         address = data['address'].toString();
-    //         vaccine = data['vaccineStatus'].toString();
-    //         print(data);
-    //       });
-    //     } else
-    //       setState(() {
-    //         dataExists = false;
-    //         shopName = address = shopkeeperName = vaccine = "";
-    //       });
+    // if (imageUrl == null && imageExists == true) {
+    //   setState(() {
+    //     imageLoading = true;
     //   });
-    //   check++;
+    // } else {
+    //   setState(() {
+    //     imageLoading = false;
+    //   });
     // }
-
     return (!dataExists)
         ? Scaffold(
             appBar: AppBar(
@@ -246,12 +210,22 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
               child: ListView(
                 children: <Widget>[
                   UserAccountsDrawerHeader(
-                    accountName: Text(skName),
+                    accountName: Text(shopkeeperName),
                     accountEmail: Text(email),
-                    currentAccountPicture: CircleAvatar(
-                      radius: 40,
-                      backgroundImage: NetworkImage(imageUrl),
-                    ),
+                    currentAccountPicture:
+                        imageUrl == null && imageExists == false
+                            ? CircleAvatar(
+                                radius: 40,
+                              )
+                            : imageLoading
+                                ? SpinKitRotatingCircle(
+                                    color: Colors.white,
+                                    size: 50.0,
+                                  )
+                                : CircleAvatar(
+                                    radius: 40,
+                                    backgroundImage: NetworkImage(imageUrl),
+                                  ),
                   ),
                   ListTile(
                     leading: Icon(Icons.list_rounded),
@@ -285,15 +259,24 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
               child: Column(
                 children: [
                   SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 80,
-                    backgroundImage: NetworkImage(imageUrl),
-                  ),
+                  imageUrl == null && imageExists == false
+                      ? CircleAvatar(
+                          radius: 80,
+                        )
+                      : imageLoading
+                          ? SpinKitRotatingCircle(
+                              color: Colors.white,
+                              size: 50.0,
+                            )
+                          : CircleAvatar(
+                              radius: 80,
+                              backgroundImage: NetworkImage(imageUrl),
+                            ),
                   SizedBox(height: 20),
                   ListTile(
                     tileColor: Colors.grey[100],
                     title: Text("Shop Name"),
-                    subtitle: Text(sN),
+                    subtitle: Text(shopName),
                   ),
                   // SizedBox(height: 10),
                   // ListTile(
@@ -305,19 +288,19 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                   ListTile(
                     tileColor: Colors.grey[100],
                     title: Text("Adress"),
-                    subtitle: Text(a),
+                    subtitle: Text(address),
                   ),
                   SizedBox(height: 10),
                   ListTile(
                     tileColor: Colors.grey[100],
                     title: Text("Vaccine Status"),
-                    subtitle: Text(v),
+                    subtitle: Text(vaccine),
                   ),
                   SizedBox(height: 10),
                   ListTile(
                     tileColor: Colors.grey[100],
                     title: Text("Shopkeeper Name"),
-                    subtitle: Text(skName),
+                    subtitle: Text(shopkeeperName),
                   ),
                   SizedBox(height: 20),
                   ElevatedButton.icon(
