@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
 import '../../flutterfire/auth.dart';
@@ -92,12 +94,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     n = nameC.text.toString();
     a = addressC.text.toString();
     v = vaccineC.text.toString();
-    setState(() {
-      email = userId.email;
-      date = userId.metadata.lastSignInTime;
-    });
 
-    print(date);
+    // print(date);
 
     CollectionReference users = firestore.collection('users');
     users.doc(uid).set({
@@ -106,9 +104,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       'vaccine': v,
       'imageUrl': i,
     }).then((value) => print("added"));
-    setState(() {
-      dataFilled = true;
-    });
+
     firestore
         .collection("users")
         .doc(uid)
@@ -117,6 +113,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       if (documentSnapshot.exists) {
         setState(() {
           datas = documentSnapshot.data();
+          email = userId.email;
+          date = userId.metadata.lastSignInTime;
           imageUrl = datas['imageUrl'].toString();
           name = datas['name'].toString();
           address = datas['address'].toString();
@@ -133,6 +131,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 
   void imageUpload() async {
+    var url;
     final _pickr = ImagePicker();
     PickedFile image;
 //handle permission
@@ -141,12 +140,39 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
-        _storage = FirebaseStorage.instance;
-        var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
-        var url = await snapshot.ref.getDownloadURL();
-        setState(() {
-          i = url;
+        // FirebaseStorage.instance.ref('customer/$uid').putFile(file);
+        // var url = await FirebaseStorage.instance
+        //     .ref('customer/$uid')
+        //     .getDownloadURL();
+
+        // var snapshots =
+        //     _storage.ref().child('customers/$uid').putFile(file).snapshot;
+        // url = await snapshots.ref.getDownloadURL();
+
+        Reference reference =
+            FirebaseStorage.instance.ref().child('Customer/').child(uid);
+        UploadTask uploadTask = reference.putFile(file);
+        await uploadTask.whenComplete(() async {
+          url = await uploadTask.snapshot.ref.getDownloadURL();
         });
+
+        // FirebaseStorage storage = FirebaseStorage.instance;
+        // Reference ref = storage.ref().child('customer/$uid');
+        // UploadTask uploadTask = ref.putFile(file);
+        // uploadTask.then((res) {
+        //   url = res.ref.getDownloadURL();
+        //   print(url);
+        // });
+
+        // var snapshots = await firebase_storage.FirebaseStorage.instance
+        //     .ref('customers/')
+        //     .putFile(file);
+        // url = snapshots.storage.ref('customers/$uid').getDownloadURL();
+        print(url);
+        i = url;
+        print(i);
+        print("image added");
+
         //   Fluttertoast.showToast(
         //       msg: "Upload Complete",
         //       toastLength: Toast.LENGTH_SHORT,
@@ -193,6 +219,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         });
       } else {
         setState(() {
+          print("new form");
           dataFilled = false;
         });
       }

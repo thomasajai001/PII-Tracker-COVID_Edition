@@ -81,6 +81,7 @@ class _CustomerUpdateState extends State<CustomerUpdate> {
   }
 
   void imageUpload() async {
+    var url;
     final _pickr = ImagePicker();
     PickedFile image;
 //handle permission
@@ -89,9 +90,12 @@ class _CustomerUpdateState extends State<CustomerUpdate> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
-        _storage = FirebaseStorage.instance;
-        var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
-        var url = await snapshot.ref.getDownloadURL();
+        Reference reference =
+            FirebaseStorage.instance.ref().child('Customer/').child(uid);
+        UploadTask uploadTask = reference.putFile(file);
+        await uploadTask.whenComplete(() async {
+          url = await uploadTask.snapshot.ref.getDownloadURL();
+        });
 
         imageChanged = true;
         i = url;

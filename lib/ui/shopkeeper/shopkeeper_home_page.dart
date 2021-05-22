@@ -27,7 +27,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   DateTime date;
   String imageUrl;
   int check = 0;
-
+  String i = "";
   bool dataExists = false, imageExists = false, imageLoading = false;
 
   void add() {
@@ -35,27 +35,38 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     shopkeeperName = shopkeeperNameC.text.toString();
     address = addressC.text.toString();
     vaccine = vaccineC.text.toString();
-    setState(() {
-      email = shopkeeper.email;
-      date = shopkeeper.metadata.lastSignInTime;
-    });
 
     CollectionReference users = firestore.collection('Shopkeeper');
-    FirebaseStorage.instance
-        .ref('shopkeeper/$uid')
-        .getDownloadURL()
-        .then((imageUrl) {
-      users.doc(uid).set({
-        'shopName': shopName,
-        'shopkeeperName': shopkeeperName,
-        'address': address,
-        'imageUrl': imageUrl,
-        'vaccine': vaccine,
-      });
-    });
+    users.doc(uid).set({
+      'shopName': shopName,
+      'shopkeeperName': shopkeeperName,
+      'address': address,
+      'imageUrl': i,
+      'vaccine': vaccine,
+    }).then((value) => print("added"));
 
-    setState(() {
-      dataExists = true;
+    firestore
+        .collection("Shopkeeper")
+        .doc(uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        setState(() {
+          datas = documentSnapshot.data();
+          email = shopkeeper.email;
+          date = shopkeeper.metadata.lastSignInTime;
+          imageUrl = datas['imageUrl'].toString();
+          shopName = datas['shopName'].toString();
+          shopkeeperName = datas['shopkeeperName'].toString();
+          address = datas['address'].toString();
+          vaccine = datas['vaccine'].toString();
+          dataExists = true;
+        });
+      } else {
+        setState(() {
+          dataExists = false;
+        });
+      }
     });
   }
 
@@ -67,12 +78,16 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
-        FirebaseStorage.instance.ref('shopkeeper/$uid').putFile(file);
-        var downloadUrl = await FirebaseStorage.instance
-            .ref('shopkeeper/$uid')
-            .getDownloadURL();
-        setState(() {
-          imageUrl = downloadUrl;
+        Reference reference =
+            FirebaseStorage.instance.ref().child('Shopkeeper/').child(uid);
+        UploadTask uploadTask = reference.putFile(file);
+        await uploadTask.whenComplete(() async {
+          var url = await uploadTask.snapshot.ref.getDownloadURL();
+
+          print(url);
+          i = url;
+          print(i);
+          print("image added");
         });
       }
     } else {
@@ -84,33 +99,14 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   void initState() {
     super.initState();
     shopkeeper = FirebaseAuth.instance.currentUser;
-    setState(() {
-      email = shopkeeper.email;
-    });
+    uid = shopkeeper.uid;
+    email = shopkeeper.email;
 
     FirebaseFirestore.instance
         .collection("Shopkeeper")
         .doc(FirebaseAuth.instance.currentUser.uid)
         .get()
         .then((documentSnapshot) {
-      Map data = documentSnapshot.data();
-      if (data['imageUrl'] == null) {
-        setState(() {
-          imageExists = false;
-        });
-      } else {
-        setState(() {
-          imageExists = true;
-        });
-      }
-    });
-
-    uid = shopkeeper.uid;
-    firestore
-        .collection("Shopkeeper")
-        .doc(uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
       if (documentSnapshot.exists) {
         setState(() {
           datas = documentSnapshot.data();
