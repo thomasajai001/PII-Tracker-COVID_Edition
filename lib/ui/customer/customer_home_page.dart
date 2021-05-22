@@ -156,18 +156,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           url = await uploadTask.snapshot.ref.getDownloadURL();
         });
 
-        // FirebaseStorage storage = FirebaseStorage.instance;
-        // Reference ref = storage.ref().child('customer/$uid');
-        // UploadTask uploadTask = ref.putFile(file);
-        // uploadTask.then((res) {
-        //   url = res.ref.getDownloadURL();
-        //   print(url);
-        // });
-
-        // var snapshots = await firebase_storage.FirebaseStorage.instance
-        //     .ref('customers/')
-        //     .putFile(file);
-        // url = snapshots.storage.ref('customers/$uid').getDownloadURL();
+   
         print(url);
         i = url;
         print(i);

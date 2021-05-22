@@ -93,7 +93,15 @@ class _ShopkeeperUpdateState extends State<ShopkeeperUpdate> {
         _storage = FirebaseStorage.instance;
         var snapshot = _storage.ref().child('images/').putFile(file).snapshot;
         var url = await snapshot.ref.getDownloadURL();
+        Reference reference =
+            FirebaseStorage.instance.ref().child('Shopkeeper/').child(uid);
+        UploadTask uploadTask = reference.putFile(file);
+        await uploadTask.whenComplete(() async {
+          var url = await uploadTask.snapshot.ref.getDownloadURL();
 
+          print(url);
+          print("image added");
+        });
         imageChanged = true;
         i = url;
 
