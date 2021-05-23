@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../flutterfire/auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class UserRegister extends StatefulWidget {
   @override
@@ -49,7 +50,39 @@ class _UserRegisterState extends State<UserRegister> {
       displayMsg = await userRegistration(email, pswd);
       setState(() {
         if (displayMsg == "") {
-          displayMsg = "Registration Successfull";
+          Alert(
+            type: AlertType.success,
+            context: context,
+            title: "Registration Complete",
+            image: Image.asset('assets/correct.png'),
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Back To Home Page",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () =>
+                    Navigator.pushNamed(context, '/selectUserType'),
+                color: Color.fromRGBO(0, 179, 134, 1.0),
+              ),
+            ],
+          ).show();
+        } else {
+          Alert(
+            type: AlertType.error,
+            context: context,
+            title: displayMsg,
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Please Reregister",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(context),
+                color: Color.fromRGBO(0, 179, 134, 1.0),
+              ),
+            ],
+          ).show();
         }
       });
     }
@@ -114,7 +147,6 @@ class _UserRegisterState extends State<UserRegister> {
                 SizedBox(
                   height: 30,
                 ),
-                Text(displayMsg),
               ],
             ),
           ),
