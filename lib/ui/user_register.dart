@@ -79,7 +79,7 @@ class _UserRegisterState extends State<UserRegister> {
                   style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
                 onPressed: () => Navigator.pop(context),
-                color: Color.fromRGBO(0, 179, 134, 1.0),
+                color: Colors.red,
               ),
             ],
           ).show();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../flutterfire/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ShopkeeperSignIn extends StatefulWidget {
   @override
@@ -41,9 +42,21 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
 
     if (errorEmail == " " && errorPass == " ") {
       User user = await userSignIn(email, pswd).catchError((e) {
-        setState(() {
-          displayMsg = e;
-        });
+        Alert(
+          type: AlertType.error,
+          context: context,
+          title: e,
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Back",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Colors.red,
+            ),
+          ],
+        ).show();
       });
       setState(() {
         if (user != null) {
