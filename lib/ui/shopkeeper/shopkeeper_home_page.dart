@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import './view_customers.dart';
+import '../../qr/qrGenerator.dart';
 
 class ShopkeeperHomePage extends StatefulWidget {
   @override
@@ -321,10 +322,10 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                         borderRadius: BorderRadius.circular(18.0),
                       ))),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/qrGenerator',
-                            arguments: {
-                              'uid': uid,
-                            });
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => QrGenerator(),
+                        );
                       },
                       icon: Icon(Icons.qr_code_outlined),
                       label: Text("Generate QR"),
