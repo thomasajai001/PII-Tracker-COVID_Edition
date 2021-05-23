@@ -261,6 +261,16 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                                     ),
                     ),
                     ListTile(
+                      leading: Icon(Icons.qr_code_outlined),
+                      title: Text("Generate QR"),
+                      onTap: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => QrGenerator(),
+                        );
+                      },
+                    ),
+                    ListTile(
                       leading: Icon(Icons.list_rounded),
                       title: Text("View customers"),
                       onTap: () {
@@ -288,87 +298,77 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                   ],
                 ),
               ),
-              body: SingleChildScrollView(
+              body: Scrollbar(
+                thickness: 15,
+                isAlwaysShown: true,
                 controller: _scrollController,
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    imageUrl == null && imageExists == false
-                        ? CircleAvatar(
-                            radius: 80,
-                          )
-                        : imageLoading
-                            ? SpinKitRotatingCircle(
-                                color: Colors.white,
-                                size: 50.0,
-                              )
-                            : CircleAvatar(
-                                radius: 80,
-                                backgroundImage: NetworkImage(imageUrl),
-                              ),
-                    SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Shop Name"),
-                        subtitle: Text(shopName),
+                showTrackOnHover: true,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      imageUrl == null && imageExists == false
+                          ? CircleAvatar(
+                              radius: 80,
+                            )
+                          : imageLoading
+                              ? SpinKitRotatingCircle(
+                                  color: Colors.white,
+                                  size: 50.0,
+                                )
+                              : CircleAvatar(
+                                  radius: 80,
+                                  backgroundImage: NetworkImage(imageUrl),
+                                ),
+                      SizedBox(height: 20),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: Colors.grey[100],
+                          title: Text("Shop Name"),
+                          subtitle: Text(shopName),
+                        ),
                       ),
-                    ),
-                    // SizedBox(height: 10),
-                    // ListTile(
-                    //   tileColor: Colors.grey[100],
-                    //   title: Text("Email"),
-                    //   subtitle: Text(email),
-                    // ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Address"),
-                        subtitle: Text(address),
+                      // SizedBox(height: 10),
+                      // ListTile(
+                      //   tileColor: Colors.grey[100],
+                      //   title: Text("Email"),
+                      //   subtitle: Text(email),
+                      // ),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: Colors.grey[100],
+                          title: Text("Address"),
+                          subtitle: Text(address),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Vaccine Status"),
-                        subtitle: Text(vaccine),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: Colors.grey[100],
+                          title: Text("Vaccine Status"),
+                          subtitle: Text(vaccine),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Shopkeeper Name"),
-                        subtitle: Text(shopkeeperName),
+                      SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          tileColor: Colors.grey[100],
+                          title: Text("Shopkeeper Name"),
+                          subtitle: Text(shopkeeperName),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 20),
-                    ElevatedButton.icon(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ))),
-                      onPressed: () {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => QrGenerator(),
-                        );
-                      },
-                      icon: Icon(Icons.qr_code_outlined),
-                      label: Text("Generate QR"),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                      SizedBox(height: 20),
+
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               bottomSheet: Container(

@@ -8,6 +8,8 @@ class VisitedShops extends StatefulWidget {
   _VisitedShopsState createState() => _VisitedShopsState();
 }
 
+ScrollController _scrollController = ScrollController();
+
 class _VisitedShopsState extends State<VisitedShops> {
   List shopkeeperData = [];
 
@@ -109,40 +111,47 @@ class _VisitedShopsState extends State<VisitedShops> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width * 0.55,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: <Widget>[
-                                  Text(
-                                    "Shop : ${e['data']['shopName']}",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 15),
-                                  Text(
-                                    "Shopkeeper: ${e['data']['shopkeeperName']}",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 15),
-                                  Text(
-                                    "Address: ${e['data']['address']}",
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(height: 15),
-                                  Text(
-                                    "Time: " +
-                                        DateFormat.MMMd().add_jm().format(
-                                            DateTime.parse(
-                                                e['time'].toDate().toString())),
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ],
+                            child: Scrollbar(
+                              thickness: 5,
+                              isAlwaysShown: true,
+                              controller: _scrollController,
+                              showTrackOnHover: true,
+                              child: SingleChildScrollView(
+                                child: Column(
+                                  children: <Widget>[
+                                    Text(
+                                      "Shop : ${e['data']['shopName']}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Text(
+                                      "Shopkeeper: ${e['data']['shopkeeperName']}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Text(
+                                      "Address: ${e['data']['address']}",
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 15),
+                                    Text(
+                                      "Time: " +
+                                          DateFormat.MMMd().add_jm().format(
+                                              DateTime.parse(e['time']
+                                                  .toDate()
+                                                  .toString())),
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),

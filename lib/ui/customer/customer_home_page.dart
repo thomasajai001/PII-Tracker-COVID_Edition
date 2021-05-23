@@ -15,6 +15,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 FirebaseStorage _storage;
+ScrollController _scrollController = ScrollController();
 
 class CustomerHomePage extends StatefulWidget {
   @override
@@ -307,6 +308,13 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       ),
                     ),
                     ListTile(
+                      leading: Icon(Icons.camera_alt),
+                      title: Text("Scan QR"),
+                      onTap: () {
+                        scan();
+                      },
+                    ),
+                    ListTile(
                       leading: Icon(Icons.list_rounded),
                       title: Text("View visited shops"),
                       onTap: () {
@@ -341,45 +349,45 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   ],
                 ),
               ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20),
-                    CircleAvatar(
-                      radius: 80,
-                      backgroundImage: NetworkImage(imageUrl),
-                    ),
-                    SizedBox(height: 20),
-                    ListTile(
-                      tileColor: Colors.grey[100],
-                      title: Text("Name"),
-                      subtitle: Text(name),
-                    ),
-                    SizedBox(height: 10),
-                    ListTile(
-                      tileColor: Colors.grey[100],
-                      title: Text("Email"),
-                      subtitle: Text(email),
-                    ),
-                    SizedBox(height: 10),
-                    ListTile(
-                      tileColor: Colors.grey[100],
-                      title: Text("Adress"),
-                      subtitle: Text(address),
-                    ),
-                    SizedBox(height: 10),
-                    ListTile(
-                      tileColor: Colors.grey[100],
-                      title: Text("Vaccine Status"),
-                      subtitle: Text(vaccine),
-                    ),
-                    SizedBox(height: 30),
-                    ElevatedButton.icon(
-                      icon: Icon(Icons.camera_alt),
-                      label: Text("Scan QR"),
-                      onPressed: scan,
-                    ),
-                  ],
+              body: Scrollbar(
+                thickness: 15,
+                isAlwaysShown: true,
+                controller: _scrollController,
+                showTrackOnHover: true,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 20),
+                      CircleAvatar(
+                        radius: 80,
+                        backgroundImage: NetworkImage(imageUrl),
+                      ),
+                      SizedBox(height: 20),
+                      ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Name"),
+                        subtitle: Text(name),
+                      ),
+                      SizedBox(height: 10),
+                      ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Email"),
+                        subtitle: Text(email),
+                      ),
+                      SizedBox(height: 10),
+                      ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Adress"),
+                        subtitle: Text(address),
+                      ),
+                      SizedBox(height: 10),
+                      ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Vaccine Status"),
+                        subtitle: Text(vaccine),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               bottomSheet: Container(
