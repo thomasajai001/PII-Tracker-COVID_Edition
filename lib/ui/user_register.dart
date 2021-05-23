@@ -18,6 +18,7 @@ class _UserRegisterState extends State<UserRegister> {
   String errorcpswd = "";
   String errorEmail = "";
   String displayMsg = "";
+  bool _passwordVisible;
 
   void register() async {
     email = emailC.text.toString();
@@ -91,6 +92,11 @@ class _UserRegisterState extends State<UserRegister> {
   Future<String> getDisplayMessage() async =>
       await userRegistration(email, pswd);
 
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,13 +122,45 @@ class _UserRegisterState extends State<UserRegister> {
                   controller: emailC,
                 ),
                 TextField(
+                  obscureText: !_passwordVisible,
                   decoration: InputDecoration(
-                    labelText: "Password",
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
+                    labelText: 'Password',
                   ),
                   controller: pswdC,
                 ),
                 TextField(
+                  obscureText: !_passwordVisible,
                   decoration: InputDecoration(
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _passwordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _passwordVisible = !_passwordVisible;
+                        });
+                      },
+                    ),
                     errorText: errorcpswd == "" ? null : '$errorcpswd',
                     labelText: "Confirm password",
                   ),

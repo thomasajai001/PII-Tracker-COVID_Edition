@@ -17,6 +17,7 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
   String errorEmail = " ";
   String errorPass = " ";
   String displayMsg = " ";
+  bool _passwordVisible;
 
   void login() async {
     email = emailC.text.toString();
@@ -71,6 +72,11 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -92,9 +98,24 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
                 controller: emailC,
               ),
               TextField(
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                  ),
                   labelText: "Password",
-                  hintText: "password",
                   errorText: errorPass == " " ? null : '$errorPass',
                 ),
                 controller: pswdC,
