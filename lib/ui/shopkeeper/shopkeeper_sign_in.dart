@@ -114,7 +114,6 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
               SizedBox(
                 height: 30,
               ),
-              Text(displayMsg),
             ],
           ),
         ),

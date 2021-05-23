@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
 import '../../flutterfire/auth.dart';
@@ -46,6 +44,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   String address = "";
   String vaccine = "";
   String shopkeeperUid;
+  bool imagePicked = false;
 
   Future<void> scan() async {
     String codeSanner = await BarcodeScanner.scan();
@@ -94,14 +93,24 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     n = nameC.text.toString();
     a = addressC.text.toString();
     v = vaccineC.text.toString();
-
-    CollectionReference users = firestore.collection('users');
-    users.doc(uid).set({
-      'name': n,
-      'address': a,
-      'vaccine': v,
-      'imageUrl': i,
-    }).then((value) => print("added"));
+    if (imagePicked) {
+      CollectionReference users = firestore.collection('users');
+      users.doc(uid).set({
+        'name': n,
+        'address': a,
+        'vaccine': v,
+        'imageUrl': i,
+      }).then((value) => print("added"));
+    } else {
+      i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
+      CollectionReference users = firestore.collection('users');
+      users.doc(uid).set({
+        'name': n,
+        'address': a,
+        'vaccine': v,
+        'imageUrl': i,
+      }).then((value) => print("added"));
+    }
 
     firestore
         .collection("users")
@@ -138,6 +147,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
+        imagePicked = true;
         Reference reference =
             FirebaseStorage.instance.ref().child('Customer/').child(uid);
         UploadTask uploadTask = reference.putFile(file);
@@ -158,6 +168,8 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         //       backgroundColor: Colors.grey[400],
         //       textColor: Colors.white,
         //       fontSize: 16.0);
+      } else {
+        i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
       }
     } else {
       print("Grant permission");

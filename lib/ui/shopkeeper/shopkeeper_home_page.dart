@@ -41,21 +41,33 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   String imageUrl;
   String i = "";
   bool dataExists = false, imageExists = false, imageLoading = false;
+  bool imageUploaded = false;
 
   void add() {
     shopName = shopNameC.text.toString();
     shopkeeperName = shopkeeperNameC.text.toString();
     address = addressC.text.toString();
     vaccine = vaccineC.text.toString();
-
-    CollectionReference users = firestore.collection('Shopkeeper');
-    users.doc(uid).set({
-      'shopName': shopName,
-      'shopkeeperName': shopkeeperName,
-      'address': address,
-      'imageUrl': i,
-      'vaccine': vaccine,
-    }).then((value) => print("added"));
+    if (imageUploaded) {
+      CollectionReference users = firestore.collection('Shopkeeper');
+      users.doc(uid).set({
+        'shopName': shopName,
+        'shopkeeperName': shopkeeperName,
+        'address': address,
+        'imageUrl': i,
+        'vaccine': vaccine,
+      }).then((value) => print("added"));
+    } else {
+      i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
+      CollectionReference users = firestore.collection('Shopkeeper');
+      users.doc(uid).set({
+        'shopName': shopName,
+        'shopkeeperName': shopkeeperName,
+        'address': address,
+        'imageUrl': i,
+        'vaccine': vaccine,
+      }).then((value) => print("added"));
+    }
 
     firestore
         .collection("Shopkeeper")
@@ -90,6 +102,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
+        imageUploaded = true;
         Reference reference =
             FirebaseStorage.instance.ref().child('Shopkeeper/').child(uid);
         UploadTask uploadTask = reference.putFile(file);
@@ -101,6 +114,8 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
           print(i);
           print("image added");
         });
+      } else {
+        i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
       }
     } else {
       print("Grant permission");
