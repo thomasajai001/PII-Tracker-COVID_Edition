@@ -138,15 +138,6 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // if (imageUrl == null && imageExists == true) {
-    //   setState(() {
-    //     imageLoading = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     imageLoading = false;
-    //   });
-    // }
     return PageView(children: [
       (!dataExists)
           ? Scaffold(

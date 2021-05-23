@@ -95,8 +95,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
     a = addressC.text.toString();
     v = vaccineC.text.toString();
 
-    // print(date);
-
     CollectionReference users = firestore.collection('users');
     users.doc(uid).set({
       'name': n,
@@ -140,15 +138,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
       image = await _pickr.getImage(source: ImageSource.gallery);
       var file = File(image.path);
       if (image != null) {
-        // FirebaseStorage.instance.ref('customer/$uid').putFile(file);
-        // var url = await FirebaseStorage.instance
-        //     .ref('customer/$uid')
-        //     .getDownloadURL();
-
-        // var snapshots =
-        //     _storage.ref().child('customers/$uid').putFile(file).snapshot;
-        // url = await snapshots.ref.getDownloadURL();
-
         Reference reference =
             FirebaseStorage.instance.ref().child('Customer/').child(uid);
         UploadTask uploadTask = reference.putFile(file);
@@ -156,7 +145,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           url = await uploadTask.snapshot.ref.getDownloadURL();
         });
 
-   
         print(url);
         i = url;
         print(i);
@@ -272,94 +260,109 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ),
             ),
           )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Customer page"),
-              centerTitle: true,
-            ),
-            drawer: Drawer(
-              child: ListView(
-                children: <Widget>[
-                  UserAccountsDrawerHeader(
-                    accountName: Text(name),
-                    accountEmail: Text(email),
-                    currentAccountPicture: CircleAvatar(
-                      radius: 40,
+        : PageView(children: [
+            Scaffold(
+              appBar: AppBar(
+                title: Text("Customer page"),
+                centerTitle: true,
+              ),
+              drawer: Drawer(
+                child: ListView(
+                  children: <Widget>[
+                    UserAccountsDrawerHeader(
+                      accountName: Text(name),
+                      accountEmail: Text(email),
+                      currentAccountPicture: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(imageUrl),
+                      ),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.list_rounded),
+                      title: Text("View visited shops"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VisitedShops()));
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.update_sharp),
+                      title: Text("Update Fields"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CustomerUpdate()));
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.logout),
+                      title: Text("Logout"),
+                      onTap: () {
+                        customerSignout();
+                        Navigator.pushNamed(context, '/selectUserType');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    CircleAvatar(
+                      radius: 80,
                       backgroundImage: NetworkImage(imageUrl),
                     ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.list_rounded),
-                    title: Text("View visited shops"),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VisitedShops()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.update_sharp),
-                    title: Text("Update Fields"),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CustomerUpdate()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text("Logout"),
-                    onTap: () {
-                      customerSignout();
-                      Navigator.pushNamed(context, '/selectUserType');
-                    },
-                  ),
-                ],
+                    SizedBox(height: 20),
+                    ListTile(
+                      tileColor: Colors.grey[100],
+                      title: Text("Name"),
+                      subtitle: Text(name),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      tileColor: Colors.grey[100],
+                      title: Text("Email"),
+                      subtitle: Text(email),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      tileColor: Colors.grey[100],
+                      title: Text("Adress"),
+                      subtitle: Text(address),
+                    ),
+                    SizedBox(height: 10),
+                    ListTile(
+                      tileColor: Colors.grey[100],
+                      title: Text("Vaccine Status"),
+                      subtitle: Text(vaccine),
+                    ),
+                    SizedBox(height: 30),
+                    ElevatedButton.icon(
+                      icon: Icon(Icons.camera_alt),
+                      label: Text("Scan QR"),
+                      onPressed: scan,
+                    ),
+                  ],
+                ),
+              ),
+              bottomSheet: Container(
+                height: 20,
+                margin: EdgeInsets.only(
+                  bottom: 20,
+                  right: MediaQuery.of(context).size.width / 10,
+                ),
+                child: Text(
+                  "<< Swipe left to view visited shops",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                alignment: Alignment.bottomRight,
               ),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  CircleAvatar(
-                    radius: 80,
-                    backgroundImage: NetworkImage(imageUrl),
-                  ),
-                  SizedBox(height: 20),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Name"),
-                    subtitle: Text(name),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Email"),
-                    subtitle: Text(email),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Adress"),
-                    subtitle: Text(address),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Vaccine Status"),
-                    subtitle: Text(vaccine),
-                  ),
-                  SizedBox(height: 30),
-                  ElevatedButton.icon(
-                    icon: Icon(Icons.camera_alt),
-                    label: Text("Scan QR"),
-                    onPressed: scan,
-                  ),
-                ],
-              ),
-            ),
-          );
+            VisitedShops()
+          ]);
   }
 }
