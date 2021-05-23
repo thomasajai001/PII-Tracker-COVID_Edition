@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
+import 'package:pii/ui/select_user_type.dart';
 import '../../flutterfire/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -9,7 +10,7 @@ import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import './visited_shops.dart';
-
+import 'package:rflutter_alert/rflutter_alert.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -158,6 +159,22 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         print(url);
         i = url;
         print(i);
+        Alert(
+          type: AlertType.success,
+          context: context,
+          title: "Successfully Uploaded",
+          image: Image.asset('assets/correct.png'),
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Continue",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+            ),
+          ],
+        ).show();
         print("image added");
 
         //   Fluttertoast.showToast(
@@ -314,7 +331,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       title: Text("Logout"),
                       onTap: () {
                         customerSignout();
-                        Navigator.pushNamed(context, '/selectUserType');
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    SelectUserType()));
                       },
                     ),
                   ],

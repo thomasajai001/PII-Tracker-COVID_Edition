@@ -24,6 +24,7 @@ class _SelectUserTypeState extends State<SelectUserType>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text("Welcome"),
         backgroundColor: Colors.amber[700],
       ),

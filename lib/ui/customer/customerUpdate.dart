@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:rflutter_alert/rflutter_alert.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 
 bool defaultData = false;
@@ -99,6 +99,22 @@ class _CustomerUpdateState extends State<CustomerUpdate> {
 
         imageChanged = true;
         i = url;
+        Alert(
+          type: AlertType.success,
+          context: context,
+          title: "Successfully Uploaded",
+          image: Image.asset('assets/correct.png'),
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Continue",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+            ),
+          ],
+        ).show();
 
         //   Fluttertoast.showToast(
         //       msg: "Upload Complete",

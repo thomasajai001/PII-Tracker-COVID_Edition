@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 import './view_customers.dart';
 import '../../qr/qrGenerator.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ShopkeeperHomePage extends StatefulWidget {
   @override
@@ -111,6 +112,22 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
           print(url);
           i = url;
+          Alert(
+            type: AlertType.success,
+            context: context,
+            title: "Successfully Uploaded",
+            image: Image.asset('assets/correct.png'),
+            buttons: [
+              DialogButton(
+                child: Text(
+                  "Continue",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+                onPressed: () => Navigator.pop(context),
+                color: Color.fromRGBO(0, 179, 134, 1.0),
+              ),
+            ],
+          ).show();
           print(i);
           print("image added");
         });
