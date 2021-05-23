@@ -47,7 +47,7 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
       });
       setState(() {
         if (user != null) {
-          Navigator.pushNamed(context, '/shopkeeperHomePage', arguments: {
+          Navigator.pushNamed(context, '/sloginloader', arguments: {
             'id': user.uid,
             'email': user.email,
             'date': user.metadata,

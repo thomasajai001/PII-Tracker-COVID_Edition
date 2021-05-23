@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pii/loading/Cloginloading.dart';
+import 'package:pii/loading/Sloading.dart';
+import 'package:pii/loading/gCustomerloading.dart';
+import 'package:pii/loading/gSloading.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
 import 'package:pii/ui/shopkeeper/shopkeeperUpdate.dart';
 import './qr/qrGenerator.dart';
@@ -12,6 +16,7 @@ import './ui/customer/customerGoogleHomePage.dart';
 import 'ui/shopkeeper/shopkeeper_sign_in.dart';
 import 'ui/shopkeeper/shopkeeper_home_page.dart';
 import './ui/shopkeeper/shopkeeperGoogleHomePage.dart';
+import './loading/gSloading.dart';
 
 void main() {
   runApp(MyApp());
@@ -43,6 +48,10 @@ class _MyAppState extends State<MyApp> {
         '/qrGenerator': (context) => QrGenerator(),
         '/customerUpdate': (context) => CustomerUpdate(),
         '/shopkeeperUpdate': (context) => ShopkeeperUpdate(),
+        '/cloginloader': (context) => CLoginLoading(),
+        '/gcloginloader': (context) => GCLoginLoading(),
+        '/sloginloader': (context) => SLoginLoading(),
+        '/gsloginloader': (context) => GSLoginLoading(),
       },
     );
   }

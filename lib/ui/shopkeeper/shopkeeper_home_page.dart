@@ -20,6 +20,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     initialPage: 0,
     viewportFraction: 0.5,
   );
+  ScrollController _scrollController = ScrollController();
 
   @override
   void dispose() {
@@ -150,6 +151,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 child: Container(
                   margin: EdgeInsets.all(15),
                   child: SingleChildScrollView(
+                    controller: _scrollController,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: <Widget>[
@@ -255,6 +257,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                 ),
               ),
               body: SingleChildScrollView(
+                controller: _scrollController,
                 child: Column(
                   children: [
                     SizedBox(height: 20),

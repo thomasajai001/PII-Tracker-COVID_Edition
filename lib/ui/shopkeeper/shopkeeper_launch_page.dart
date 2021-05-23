@@ -59,7 +59,7 @@ class _ShopkeeperLaunchPageState extends State<ShopkeeperLaunchPage> {
             text: "Sign in with Google",
             onPressed: () async {
               await googleSignIn();
-              Navigator.pushNamed(context, '/shopkeeperGoogleHomePage');
+              Navigator.pushNamed(context, '/gsloginloader');
             },
           )
         ],

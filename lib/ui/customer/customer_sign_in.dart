@@ -49,7 +49,7 @@ class _CustomerSignInState extends State<CustomerSignIn> {
         if (user != null) {
           Navigator.pushReplacementNamed(
             context,
-            '/customerHomePage',
+            '/cloginloader',
           );
         }
       });
