@@ -57,7 +57,7 @@ class _ViewCustomersState extends State<ViewCustomers> {
         print(e.toString());
       }
     });
-    new Timer(new Duration(milliseconds: 400), () {
+    new Timer(new Duration(milliseconds: 350), () {
       setState(() {
         loaded = true;
       });

@@ -15,6 +15,17 @@ class ShopkeeperHomePage extends StatefulWidget {
 }
 
 class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
+  PageController _pageController = PageController(
+    initialPage: 0,
+    viewportFraction: 0.5,
+  );
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   User shopkeeper;
   TextEditingController shopNameC = TextEditingController();
@@ -26,7 +37,6 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   String shopName, shopkeeperName, address, vaccine;
   DateTime date;
   String imageUrl;
-  int check = 0;
   String i = "";
   bool dataExists = false, imageExists = false, imageLoading = false;
 
@@ -137,187 +147,217 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
     //     imageLoading = false;
     //   });
     // }
-    return (!dataExists)
-        ? Scaffold(
-            appBar: AppBar(
-              title: Text("Shopkeeper Page"),
-              centerTitle: true,
-            ),
-            body: SafeArea(
-              child: Container(
-                margin: EdgeInsets.all(15),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Shop Name",
+    return PageView(children: [
+      (!dataExists)
+          ? Scaffold(
+              appBar: AppBar(
+                title: Text("Shopkeeper Page"),
+                centerTitle: true,
+              ),
+              body: SafeArea(
+                child: Container(
+                  margin: EdgeInsets.all(15),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: "Shop Name",
+                          ),
+                          controller: shopNameC,
                         ),
-                        controller: shopNameC,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Shopkeeper Name",
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: "Shopkeeper Name",
+                          ),
+                          controller: shopkeeperNameC,
                         ),
-                        controller: shopkeeperNameC,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Address",
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: "Address",
+                          ),
+                          controller: addressC,
                         ),
-                        controller: addressC,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          labelText: "Vaccine Status",
+                        TextField(
+                          decoration: InputDecoration(
+                            labelText: "Vaccine Status",
+                          ),
+                          controller: vaccineC,
                         ),
-                        controller: vaccineC,
-                      ),
-                      ElevatedButton(
-                        onPressed: imageUpload,
-                        child: Text("Upload photo"),
-                      ),
-                      ElevatedButton(
-                        onPressed: add,
-                        child: Text("Add"),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          customerSignout();
-                          Navigator.pushNamed(context, '/selectUserType');
-                        },
-                        child: Text("logout"),
-                      ),
-                    ],
+                        ElevatedButton(
+                          onPressed: imageUpload,
+                          child: Text("Upload photo"),
+                        ),
+                        ElevatedButton(
+                          onPressed: add,
+                          child: Text("Add"),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            customerSignout();
+                            Navigator.pushNamed(context, '/selectUserType');
+                          },
+                          child: Text("logout"),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+              ))
+          : Scaffold(
+              appBar: AppBar(
+                title: Text("Shopkeeper page"),
+                centerTitle: true,
               ),
-            ))
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("ShopKeeper page"),
-              centerTitle: true,
-            ),
-            drawer: Drawer(
-              child: ListView(
-                children: <Widget>[
-                  UserAccountsDrawerHeader(
-                    accountName: Text(shopkeeperName),
-                    accountEmail: Text(email),
-                    currentAccountPicture:
-                        imageUrl == null && imageExists == false
-                            ? CircleAvatar(
-                                radius: 40,
+              drawer: Drawer(
+                child: ListView(
+                  children: <Widget>[
+                    UserAccountsDrawerHeader(
+                      accountName: Text(shopkeeperName),
+                      accountEmail: Text(email),
+                      currentAccountPicture:
+                          imageUrl == null && imageExists == false
+                              ? CircleAvatar(
+                                  radius: 40,
+                                )
+                              : imageLoading
+                                  ? SpinKitRotatingCircle(
+                                      color: Colors.white,
+                                      size: 50.0,
+                                    )
+                                  : CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: NetworkImage(imageUrl),
+                                    ),
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.list_rounded),
+                      title: Text("View customers"),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewCustomers()));
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.update_sharp),
+                      title: Text("Update Fields"),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/shopkeeperUpdate');
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.logout),
+                      title: Text("Logout"),
+                      onTap: () {
+                        customerSignout();
+                        Navigator.pushNamed(context, '/selectUserType');
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(height: 20),
+                    imageUrl == null && imageExists == false
+                        ? CircleAvatar(
+                            radius: 80,
+                          )
+                        : imageLoading
+                            ? SpinKitRotatingCircle(
+                                color: Colors.white,
+                                size: 50.0,
                               )
-                            : imageLoading
-                                ? SpinKitRotatingCircle(
-                                    color: Colors.white,
-                                    size: 50.0,
-                                  )
-                                : CircleAvatar(
-                                    radius: 40,
-                                    backgroundImage: NetworkImage(imageUrl),
-                                  ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.list_rounded),
-                    title: Text("View customers"),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ViewCustomers()));
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.update_sharp),
-                    title: Text("Update Fields"),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/shopkeeperUpdate');
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.logout),
-                    title: Text("Logout"),
-                    onTap: () {
-                      customerSignout();
-                      Navigator.pushNamed(context, '/selectUserType');
-                    },
-                  ),
-                ],
+                            : CircleAvatar(
+                                radius: 80,
+                                backgroundImage: NetworkImage(imageUrl),
+                              ),
+                    SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Shop Name"),
+                        subtitle: Text(shopName),
+                      ),
+                    ),
+                    // SizedBox(height: 10),
+                    // ListTile(
+                    //   tileColor: Colors.grey[100],
+                    //   title: Text("Email"),
+                    //   subtitle: Text(email),
+                    // ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Address"),
+                        subtitle: Text(address),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Vaccine Status"),
+                        subtitle: Text(vaccine),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ListTile(
+                        tileColor: Colors.grey[100],
+                        title: Text("Shopkeeper Name"),
+                        subtitle: Text(shopkeeperName),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton.icon(
+                      style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ))),
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/qrGenerator',
+                            arguments: {
+                              'uid': uid,
+                            });
+                      },
+                      icon: Icon(Icons.qr_code_outlined),
+                      label: Text("Generate QR"),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
+              ),
+              bottomSheet: Container(
+                height: 20,
+                margin: EdgeInsets.only(
+                  bottom: 20,
+                  right: MediaQuery.of(context).size.width / 10,
+                ),
+                child: Text(
+                  "<< Swipe left to view customers",
+                  style: TextStyle(color: Colors.grey),
+                ),
+                alignment: Alignment.bottomRight,
               ),
             ),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  SizedBox(height: 20),
-                  imageUrl == null && imageExists == false
-                      ? CircleAvatar(
-                          radius: 80,
-                        )
-                      : imageLoading
-                          ? SpinKitRotatingCircle(
-                              color: Colors.white,
-                              size: 50.0,
-                            )
-                          : CircleAvatar(
-                              radius: 80,
-                              backgroundImage: NetworkImage(imageUrl),
-                            ),
-                  SizedBox(height: 20),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Shop Name"),
-                    subtitle: Text(shopName),
-                  ),
-                  // SizedBox(height: 10),
-                  // ListTile(
-                  //   tileColor: Colors.grey[100],
-                  //   title: Text("Email"),
-                  //   subtitle: Text(email),
-                  // ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Adress"),
-                    subtitle: Text(address),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Vaccine Status"),
-                    subtitle: Text(vaccine),
-                  ),
-                  SizedBox(height: 10),
-                  ListTile(
-                    tileColor: Colors.grey[100],
-                    title: Text("Shopkeeper Name"),
-                    subtitle: Text(shopkeeperName),
-                  ),
-                  SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18.0),
-                    ))),
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/qrGenerator', arguments: {
-                        'uid': uid,
-                      });
-                    },
-                    icon: Icon(Icons.qr_code_outlined),
-                    label: Text("Generate QR"),
-                  ),
-                  SizedBox(height: 20),
-                ],
-              ),
-            ),
-          );
+      ViewCustomers()
+    ]);
   }
 }
