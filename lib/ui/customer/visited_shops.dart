@@ -151,28 +151,35 @@ class _VisitedShopsState extends State<VisitedShops> {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: <Widget>[
-                                        Text(
-                                          "Shop : ${e['data']['shopName']}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                        FittedBox(
+                                          child: Text(
+                                            "Shop : ${e['data']['shopName']}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         SizedBox(height: 15),
-                                        Text(
-                                          "Shopkeeper: ${e['data']['shopkeeperName']}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                        FittedBox(
+                                          child: Text(
+                                            "Shopkeeper: ${e['data']['shopkeeperName']}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         SizedBox(height: 15),
-                                        Text(
-                                          "Address: ${e['data']['address']}",
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold),
+                                        FittedBox(
+                                          child: Text(
+                                            "Address: ${e['data']['address']}",
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
                                         ),
                                         SizedBox(height: 15),
-                                        Text(
+                                        FittedBox(
+                                            child: Text(
                                           "Time: " +
                                               DateFormat.MMMd().add_jm().format(
                                                   DateTime.parse(e['time']
@@ -181,7 +188,7 @@ class _VisitedShopsState extends State<VisitedShops> {
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold),
-                                        )
+                                        )),
                                       ],
                                     ),
                                   ),

@@ -148,32 +148,40 @@ class _ViewCustomersState extends State<ViewCustomers> {
                                 child: SingleChildScrollView(
                                   child: Column(
                                     children: <Widget>[
-                                      Text(
-                                        "Name : ${e['data']['name']}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      FittedBox(
+                                        child: Text(
+                                          "Name : ${e['data']['name']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                       SizedBox(height: 15),
-                                      Text(
-                                        "Vaccine Status: ${e['data']['vaccine']}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      FittedBox(
+                                        child: Text(
+                                          "Vaccine Status: ${e['data']['vaccine']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                       SizedBox(height: 15),
-                                      Text(
-                                        "Address: ${e['data']['address']}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      FittedBox(
+                                        child: Text(
+                                          "Address: ${e['data']['address']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                       SizedBox(height: 15),
-                                      Text(
-                                        "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
-                                        style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
+                                      FittedBox(
+                                        child: Text(
+                                          "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       )
                                     ],
                                   ),
