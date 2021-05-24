@@ -10,7 +10,7 @@
 
 ### This is a simple soultion to these problems, built using flutter framework and firebase for backend.
 
-### You can download the app [here]().
+### You can download the app [here](https://drive.google.com/file/d/1J8AlYJotK2_KmnQYkl8fLCxWZcgBZuUW/view?usp=sharing).
 
 ## Team members
 
@@ -57,4 +57,4 @@ https://drive.google.com/file/d/1U8Jj9rwsL_dEvM3oUImVIPrIY6MbrlZ7/view?usp=shari
 
 ## How to Run
 
-Just download and install the [apk file]().
+Just download and install the [apk file](https://drive.google.com/file/d/1J8AlYJotK2_KmnQYkl8fLCxWZcgBZuUW/view?usp=sharing).
