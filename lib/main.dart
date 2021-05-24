@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pii/Themes/theme2.dart';
 import 'package:pii/loading/Cloginloading.dart';
 import 'package:pii/loading/Sloading.dart';
 import 'package:pii/loading/gCustomerloading.dart';
@@ -17,10 +18,21 @@ import 'ui/shopkeeper/shopkeeper_sign_in.dart';
 import 'ui/shopkeeper/shopkeeper_home_page.dart';
 import './ui/shopkeeper/shopkeeperGoogleHomePage.dart';
 import './loading/gSloading.dart';
+import './Themes/theme3.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+// import 'Themes/themes.dart';
 void main() {
   runApp(MyApp());
 }
+
+// ThemeData themeData(ThemeData theme) {
+//   // return theme.copyWith(
+//   //   textTheme: GoogleFonts.sourceSansProTextTheme(
+//   //     theme.textTheme,
+//   //   ),
+//   // );
+// }
 
 class MyApp extends StatefulWidget {
   @override
@@ -31,6 +43,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: themeData(ThemeConfig.lightTheme),
+      // darkTheme: themeData(ThemeConfig.darkTheme),
+      //  darkTheme: darkThemeData(context),
+      // theme: theme(),
       title: "PII Tracker - COVID Edition", home: MyHomePage(),
       // routes for naviagting to different pages
       routes: {
