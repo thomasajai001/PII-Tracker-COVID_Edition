@@ -1,3 +1,4 @@
+import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -367,6 +368,27 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                       ),
                     ],
                   ),
+                ),
+              ),
+              floatingActionButtonLocation:
+                  FloatingActionButtonLocation.centerFloat,
+              floatingActionButton: Container(
+                height: MediaQuery.of(context).size.height * 0.15,
+                child: Column(
+                  children: [
+                    FloatingActionButton(
+                      child: Icon(Icons.qr_code_scanner_rounded),
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (context) => QrGenerator(),
+                        );
+                      },
+                    ),
+                    SizedBox(
+                      height: 20,
+                    )
+                  ],
                 ),
               ),
               bottomSheet: Container(
