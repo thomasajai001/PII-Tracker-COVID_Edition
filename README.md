@@ -2,15 +2,15 @@
 
 # PII Tracker - Covid Edition
 
-### This is developed as a submission for Tinkerhub Build From Home 2021.
+ PII(Personally Identifiable Information) Tracker- Covid Edition is developed as a submission for Tinkerhub Build From Home 2021.
 
-### This app is developed as a substitue to the books which is used everywhere in order to collect the details of the people amidst the COVID-19 pandemic. Through this app, the details of the people like their name, age, address, and their vaccination status are collected.
+ This app is developed as a substitue to the books which is used everywhere in order to collect the details of the people amidst the COVID-19 pandemic. Through this app, the details of the people like their name, age, address, and their vaccination status are collected.
 
-### This is an all-in-one app, which can be used by anyone across the globe to reister as a buyer or a seller to record the places that they have visited.
+ This is an all-in-one app, which can be used by anyone across the globe to reister as a buyer or a seller to record the places that they have visited.
 
-### This is a simple soultion to these problems, built using flutter framework and firebase for backend.
+ This is a simple soultion to these problems, built using flutter framework and firebase for backend.
 
-### You can download the app [here](https://drive.google.com/file/d/1J8AlYJotK2_KmnQYkl8fLCxWZcgBZuUW/view?usp=sharing).
+ You can download the app [here](https://drive.google.com/file/d/1J8AlYJotK2_KmnQYkl8fLCxWZcgBZuUW/view?usp=sharing).
 
 ## Team members
 
