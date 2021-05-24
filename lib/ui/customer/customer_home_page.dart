@@ -11,10 +11,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import './visited_shops.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-// import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-FirebaseStorage _storage;
 ScrollController _scrollController = ScrollController();
 
 class CustomerHomePage extends StatefulWidget {
@@ -29,6 +27,7 @@ Map datas = {};
 var list = [];
 
 class _CustomerHomePageState extends State<CustomerHomePage> {
+  PageController _pageController = PageController();
   TextEditingController nameC = TextEditingController();
   TextEditingController addressC = TextEditingController();
   TextEditingController vaccineC = TextEditingController();
@@ -178,22 +177,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
         ).show();
         print("image added");
 
-        //   Fluttertoast.showToast(
-        //       msg: "Upload Complete",
-        //       toastLength: Toast.LENGTH_SHORT,
-        //       gravity: ToastGravity.CENTER,
-        //       timeInSecForIosWeb: 1,
-        //       backgroundColor: Colors.grey[400],
-        //       textColor: Colors.white,
-        //       fontSize: 16.0);
       } else {
         i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
       }
     } else {
       print("Grant permission");
     }
-//select image
-// upload to storage
   }
 
   @override
@@ -290,7 +279,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               ),
             ),
           )
-        : PageView(children: [
+        : PageView(controller: _pageController, children: [
             Scaffold(
               appBar: AppBar(
                 title: Text("Customer page"),
@@ -318,10 +307,9 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       leading: Icon(Icons.list_rounded),
                       title: Text("View visited shops"),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => VisitedShops()));
+                        setState(() {
+                          _pageController.jumpToPage(1);
+                        });
                       },
                     ),
                     ListTile(
@@ -377,7 +365,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       SizedBox(height: 10),
                       ListTile(
                         tileColor: Colors.grey[100],
-                        title: Text("Adress"),
+                        title: Text("Address"),
                         subtitle: Text(address),
                       ),
                       SizedBox(height: 10),

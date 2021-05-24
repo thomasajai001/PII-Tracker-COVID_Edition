@@ -69,6 +69,26 @@ class _VisitedShopsState extends State<VisitedShops> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+              // color: Colors.pink,
+              ),
+          height: 20,
+          margin: EdgeInsets.only(
+            bottom: 20,
+            left: MediaQuery.of(context).size.width / 10,
+          ),
+          child: Text(
+            "Swipe right to to go back >>",
+            style: TextStyle(color: Colors.grey),
+          ),
+          alignment: Alignment.bottomLeft,
+        ),
+      ),
       backgroundColor: Colors.white,
       appBar: AppBar(
         leading: Text(""),

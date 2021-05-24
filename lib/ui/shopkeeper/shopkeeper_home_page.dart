@@ -19,7 +19,6 @@ class ShopkeeperHomePage extends StatefulWidget {
 class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   PageController _pageController = PageController(
     initialPage: 0,
-    viewportFraction: 0.5,
   );
   ScrollController _scrollController = ScrollController();
 
@@ -172,7 +171,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(children: [
+    return PageView(controller: _pageController, children: [
       (!dataExists)
           ? Scaffold(
               appBar: AppBar(
@@ -274,10 +273,9 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                       leading: Icon(Icons.list_rounded),
                       title: Text("View customers"),
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewCustomers()));
+                        setState(() {
+                          _pageController.jumpToPage(1);
+                        });
                       },
                     ),
                     ListTile(
