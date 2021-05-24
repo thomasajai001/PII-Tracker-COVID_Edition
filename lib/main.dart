@@ -21,7 +21,8 @@ import './loading/gSloading.dart';
 import './Themes/theme3.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// import 'Themes/themes.dart';
+import 'Themes/themes.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -43,10 +44,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData(
+      //   scaffoldBackgroundColor: Colors.grey.shade300,
+      //   primarySwatch: Colors.red,
+      //   accentColor: Colors.indigo,
+      // ),
       // theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
-      //  darkTheme: darkThemeData(context),
+      // darkTheme: darkThemeData(context),
       // theme: theme(),
+      // theme: ThemeData(
+      //   accentColor: Color(0xff2B7EFF),
+      //   primaryColor: Colors.white,
+      // ),
       title: "PII Tracker - COVID Edition", home: MyHomePage(),
       // routes for naviagting to different pages
       routes: {
