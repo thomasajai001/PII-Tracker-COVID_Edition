@@ -369,28 +369,48 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                             backgroundImage: NetworkImage(imageUrl),
                           ),
                           SizedBox(height: 20),
-                          ListTile(
-                            tileColor: Colors.grey[100],
-                            title: Text("Name"),
-                            subtitle: Text(name),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.grey[100],
+                              title: Text("Name"),
+                              subtitle: Text(name),
+                            ),
                           ),
                           SizedBox(height: 10),
-                          ListTile(
-                            tileColor: Colors.grey[100],
-                            title: Text("Email"),
-                            subtitle: Text(email),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.grey[100],
+                              title: Text("Email"),
+                              subtitle: Text(email),
+                            ),
                           ),
                           SizedBox(height: 10),
-                          ListTile(
-                            tileColor: Colors.grey[100],
-                            title: Text("Address"),
-                            subtitle: Text(address),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.grey[100],
+                              title: Text("Address"),
+                              subtitle: Text(address),
+                            ),
                           ),
                           SizedBox(height: 10),
-                          ListTile(
-                            tileColor: Colors.grey[100],
-                            title: Text("Vaccine Status"),
-                            subtitle: Text(vaccine),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8,
+                            ),
+                            child: ListTile(
+                              tileColor: Colors.grey[100],
+                              title: Text("Vaccine Status"),
+                              subtitle: Text(vaccine),
+                            ),
                           ),
                         ],
                       ),
