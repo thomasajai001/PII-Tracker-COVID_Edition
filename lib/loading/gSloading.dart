@@ -17,7 +17,7 @@ class _GSLoginLoadingState extends State<GSLoginLoading> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: new Image.asset(
-        "assets/5.gif",
+        "assets/6.gif",
         fit: BoxFit.cover,
         height: double.infinity,
         width: double.infinity,

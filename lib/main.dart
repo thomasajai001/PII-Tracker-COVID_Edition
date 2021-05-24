@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       // theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
       // darkTheme: darkThemeData(context),
-      // theme: theme(),
+      theme: theme(),
       // theme: ThemeData(
       //   accentColor: Color(0xff2B7EFF),
       //   primaryColor: Colors.white,
