@@ -355,7 +355,8 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                             // ),
                             SizedBox(height: 10),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ListTile(
                                 tileColor: Colors.grey[100],
                                 title: Text("Address"),
@@ -364,7 +365,8 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                             ),
                             SizedBox(height: 10),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ListTile(
                                 tileColor: Colors.grey[100],
                                 title: Text("Vaccine Status"),
@@ -373,7 +375,8 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                             ),
                             SizedBox(height: 10),
                             Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: ListTile(
                                 tileColor: Colors.grey[100],
                                 title: Text("Shopkeeper Name"),
