@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
 import 'package:pii/ui/select_user_type.dart';
@@ -45,7 +47,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   String address = "";
   String vaccine = "";
   String shopkeeperUid;
-  bool imagePicked = false;
+  bool imagePicked = false, loading = true;
 
   Future<void> scan() async {
     String codeSanner = await BarcodeScanner.scan();
@@ -176,7 +178,6 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
           ],
         ).show();
         print("image added");
-
       } else {
         i = "https://t3.ftcdn.net/jpg/03/46/83/96/360_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
       }
@@ -188,6 +189,12 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   @override
   void initState() {
     super.initState();
+    new Timer(Duration(milliseconds: 1000), () {
+      setState(() {
+        loading = false;
+      });
+    });
+
     userId = FirebaseAuth.instance.currentUser;
     uid = userId.uid;
 
@@ -223,175 +230,186 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
   }
 
   Widget build(BuildContext context) {
-    return (!dataFilled)
+    return loading
         ? Scaffold(
             appBar: AppBar(
               title: Text("Customer page"),
               centerTitle: true,
             ),
-            body: SafeArea(
-              child: Container(
-                margin: EdgeInsets.all(15),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: "Name",
-                        ),
-                        controller: nameC,
+            body: Center(
+                child: Container(
+                    width: 200,
+                    height: 200,
+                    child: CircularProgressIndicator())))
+        : (!dataFilled)
+            ? Scaffold(
+                appBar: AppBar(
+                  title: Text("Customer page"),
+                  centerTitle: true,
+                ),
+                body: SafeArea(
+                  child: Container(
+                    margin: EdgeInsets.all(15),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: "Name",
+                            ),
+                            controller: nameC,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: "Address",
+                            ),
+                            controller: addressC,
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              hintText: "Vaccine Status",
+                            ),
+                            controller: vaccineC,
+                          ),
+                          ElevatedButton(
+                            onPressed: imageUpload,
+                            child: Text("Upload photo"),
+                          ),
+                          ElevatedButton(
+                            onPressed: add,
+                            child: Text("Add"),
+                          ),
+                          SizedBox(
+                            height: 30,
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              customerSignout();
+                              Navigator.pushReplacementNamed(
+                                  context, '/registration');
+                            },
+                            child: Text("logout"),
+                          ),
+                        ],
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: "Address",
-                        ),
-                        controller: addressC,
-                      ),
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: "Vaccine Status",
-                        ),
-                        controller: vaccineC,
-                      ),
-                      ElevatedButton(
-                        onPressed: imageUpload,
-                        child: Text("Upload photo"),
-                      ),
-                      ElevatedButton(
-                        onPressed: add,
-                        child: Text("Add"),
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          customerSignout();
-                          Navigator.pushReplacementNamed(
-                              context, '/registration');
-                        },
-                        child: Text("logout"),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          )
-        : PageView(controller: _pageController, children: [
-            Scaffold(
-              appBar: AppBar(
-                title: Text("Customer page"),
-                centerTitle: true,
-              ),
-              drawer: Drawer(
-                child: ListView(
-                  children: <Widget>[
-                    UserAccountsDrawerHeader(
-                      accountName: Text(name),
-                      accountEmail: Text(email),
-                      currentAccountPicture: CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(imageUrl),
+              )
+            : PageView(controller: _pageController, children: [
+                Scaffold(
+                  appBar: AppBar(
+                    title: Text("Customer page"),
+                    centerTitle: true,
+                  ),
+                  drawer: Drawer(
+                    child: ListView(
+                      children: <Widget>[
+                        UserAccountsDrawerHeader(
+                          accountName: Text(name),
+                          accountEmail: Text(email),
+                          currentAccountPicture: CircleAvatar(
+                            radius: 40,
+                            backgroundImage: NetworkImage(imageUrl),
+                          ),
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.camera_alt),
+                          title: Text("Scan QR"),
+                          onTap: () {
+                            scan();
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.list_rounded),
+                          title: Text("View visited shops"),
+                          onTap: () {
+                            setState(() {
+                              _pageController.jumpToPage(1);
+                            });
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.update_sharp),
+                          title: Text("Update Fields"),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CustomerUpdate()));
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.logout),
+                          title: Text("Logout"),
+                          onTap: () {
+                            customerSignout();
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        SelectUserType()));
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  body: Scrollbar(
+                    thickness: 15,
+                    isAlwaysShown: true,
+                    controller: _scrollController,
+                    showTrackOnHover: true,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          SizedBox(height: 20),
+                          CircleAvatar(
+                            radius: 80,
+                            backgroundImage: NetworkImage(imageUrl),
+                          ),
+                          SizedBox(height: 20),
+                          ListTile(
+                            tileColor: Colors.grey[100],
+                            title: Text("Name"),
+                            subtitle: Text(name),
+                          ),
+                          SizedBox(height: 10),
+                          ListTile(
+                            tileColor: Colors.grey[100],
+                            title: Text("Email"),
+                            subtitle: Text(email),
+                          ),
+                          SizedBox(height: 10),
+                          ListTile(
+                            tileColor: Colors.grey[100],
+                            title: Text("Address"),
+                            subtitle: Text(address),
+                          ),
+                          SizedBox(height: 10),
+                          ListTile(
+                            tileColor: Colors.grey[100],
+                            title: Text("Vaccine Status"),
+                            subtitle: Text(vaccine),
+                          ),
+                        ],
                       ),
                     ),
-                    ListTile(
-                      leading: Icon(Icons.camera_alt),
-                      title: Text("Scan QR"),
-                      onTap: () {
-                        scan();
-                      },
+                  ),
+                  bottomSheet: Container(
+                    height: 20,
+                    margin: EdgeInsets.only(
+                      bottom: 20,
+                      right: MediaQuery.of(context).size.width / 10,
                     ),
-                    ListTile(
-                      leading: Icon(Icons.list_rounded),
-                      title: Text("View visited shops"),
-                      onTap: () {
-                        setState(() {
-                          _pageController.jumpToPage(1);
-                        });
-                      },
+                    child: Text(
+                      "<< Swipe left to view visited shops",
+                      style: TextStyle(color: Colors.grey),
                     ),
-                    ListTile(
-                      leading: Icon(Icons.update_sharp),
-                      title: Text("Update Fields"),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CustomerUpdate()));
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text("Logout"),
-                      onTap: () {
-                        customerSignout();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    SelectUserType()));
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              body: Scrollbar(
-                thickness: 15,
-                isAlwaysShown: true,
-                controller: _scrollController,
-                showTrackOnHover: true,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      CircleAvatar(
-                        radius: 80,
-                        backgroundImage: NetworkImage(imageUrl),
-                      ),
-                      SizedBox(height: 20),
-                      ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Name"),
-                        subtitle: Text(name),
-                      ),
-                      SizedBox(height: 10),
-                      ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Email"),
-                        subtitle: Text(email),
-                      ),
-                      SizedBox(height: 10),
-                      ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Address"),
-                        subtitle: Text(address),
-                      ),
-                      SizedBox(height: 10),
-                      ListTile(
-                        tileColor: Colors.grey[100],
-                        title: Text("Vaccine Status"),
-                        subtitle: Text(vaccine),
-                      ),
-                    ],
+                    alignment: Alignment.bottomRight,
                   ),
                 ),
-              ),
-              bottomSheet: Container(
-                height: 20,
-                margin: EdgeInsets.only(
-                  bottom: 20,
-                  right: MediaQuery.of(context).size.width / 10,
-                ),
-                child: Text(
-                  "<< Swipe left to view visited shops",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                alignment: Alignment.bottomRight,
-              ),
-            ),
-            VisitedShops()
-          ]);
+                VisitedShops()
+              ]);
   }
 }

@@ -11,7 +11,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 bool defaultData = false;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-FirebaseStorage _storage;
 
 class CustomerUpdate extends StatefulWidget {
   @override

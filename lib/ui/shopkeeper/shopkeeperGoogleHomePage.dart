@@ -2,10 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../flutterfire/auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import './view_customers.dart';
 
-FirebaseStorage _storage;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
 User shopUser;
 

@@ -1,4 +1,5 @@
-import 'package:flutter_signin_button/button_list.dart';
+import 'dart:async';
+
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -42,7 +43,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   String imageUrl;
   String i = "";
   bool dataExists = false, imageExists = false, imageLoading = false;
-  bool imageUploaded = false;
+  bool imageUploaded = false, loading = true;
 
   void add() {
     shopName = shopNameC.text.toString();
@@ -142,6 +143,12 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
   @override
   void initState() {
     super.initState();
+    new Timer(Duration(milliseconds: 1000), () {
+      setState(() {
+        loading = false;
+      });
+    });
+
     shopkeeper = FirebaseAuth.instance.currentUser;
     uid = shopkeeper.uid;
     email = shopkeeper.email;
@@ -172,239 +179,251 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(controller: _pageController, children: [
-      (!dataExists)
-          ? Scaffold(
-              appBar: AppBar(
-                title: Text("Shopkeeper Page"),
-                centerTitle: true,
-              ),
-              body: SafeArea(
-                child: Container(
-                  margin: EdgeInsets.all(15),
-                  child: SingleChildScrollView(
-                    controller: _scrollController,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: "Shop Name",
-                          ),
-                          controller: shopNameC,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: "Shopkeeper Name",
-                          ),
-                          controller: shopkeeperNameC,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: "Address",
-                          ),
-                          controller: addressC,
-                        ),
-                        TextField(
-                          decoration: InputDecoration(
-                            labelText: "Vaccine Status",
-                          ),
-                          controller: vaccineC,
-                        ),
-                        ElevatedButton(
-                          onPressed: imageUpload,
-                          child: Text("Upload photo"),
-                        ),
-                        ElevatedButton(
-                          onPressed: add,
-                          child: Text("Add"),
-                        ),
-                        SizedBox(
-                          height: 30,
-                        ),
-                        ElevatedButton(
-                          onPressed: () {
-                            customerSignout();
-                            Navigator.pushNamed(context, '/selectUserType');
-                          },
-                          child: Text("logout"),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ))
-          : Scaffold(
-              appBar: AppBar(
-                title: Text("Shopkeeper page"),
-                centerTitle: true,
-              ),
-              drawer: Drawer(
-                child: ListView(
-                  children: <Widget>[
-                    UserAccountsDrawerHeader(
-                      accountName: Text(shopkeeperName),
-                      accountEmail: Text(email),
-                      currentAccountPicture:
-                          imageUrl == null && imageExists == false
-                              ? CircleAvatar(
-                                  radius: 40,
-                                )
-                              : imageLoading
-                                  ? SpinKitRotatingCircle(
-                                      color: Colors.white,
-                                      size: 50.0,
-                                    )
-                                  : CircleAvatar(
-                                      radius: 40,
-                                      backgroundImage: NetworkImage(imageUrl),
-                                    ),
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.qr_code_outlined),
-                      title: Text("Generate QR"),
-                      onTap: () {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => QrGenerator(),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.list_rounded),
-                      title: Text("View customers"),
-                      onTap: () {
-                        setState(() {
-                          _pageController.jumpToPage(1);
-                        });
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.update_sharp),
-                      title: Text("Update Fields"),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/shopkeeperUpdate');
-                      },
-                    ),
-                    ListTile(
-                      leading: Icon(Icons.logout),
-                      title: Text("Logout"),
-                      onTap: () {
-                        customerSignout();
-                        Navigator.pushNamed(context, '/selectUserType');
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              body: Scrollbar(
-                thickness: 15,
-                isAlwaysShown: true,
-                controller: _scrollController,
-                showTrackOnHover: true,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      SizedBox(height: 20),
-                      imageUrl == null && imageExists == false
-                          ? CircleAvatar(
-                              radius: 80,
-                            )
-                          : imageLoading
-                              ? SpinKitRotatingCircle(
-                                  color: Colors.white,
-                                  size: 50.0,
-                                )
-                              : CircleAvatar(
-                                  radius: 80,
-                                  backgroundImage: NetworkImage(imageUrl),
-                                ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          tileColor: Colors.grey[100],
-                          title: Text("Shop Name"),
-                          subtitle: Text(shopName),
-                        ),
-                      ),
-                      // SizedBox(height: 10),
-                      // ListTile(
-                      //   tileColor: Colors.grey[100],
-                      //   title: Text("Email"),
-                      //   subtitle: Text(email),
-                      // ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          tileColor: Colors.grey[100],
-                          title: Text("Address"),
-                          subtitle: Text(address),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          tileColor: Colors.grey[100],
-                          title: Text("Vaccine Status"),
-                          subtitle: Text(vaccine),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: ListTile(
-                          tileColor: Colors.grey[100],
-                          title: Text("Shopkeeper Name"),
-                          subtitle: Text(shopkeeperName),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerFloat,
-              floatingActionButton: Container(
-                height: MediaQuery.of(context).size.height * 0.15,
-                child: Column(
-                  children: [
-                    FloatingActionButton(
-                      child: Icon(Icons.qr_code_scanner_rounded),
-                      onPressed: () {
-                        showDialog<void>(
-                          context: context,
-                          builder: (context) => QrGenerator(),
-                        );
-                      },
-                    ),
-                    SizedBox(
-                      height: 20,
-                    )
-                  ],
-                ),
-              ),
-              bottomSheet: Container(
-                height: 20,
-                margin: EdgeInsets.only(
-                  bottom: 20,
-                  right: MediaQuery.of(context).size.width / 10,
-                ),
-                child: Text(
-                  "<< Swipe left to view customers",
-                  style: TextStyle(color: Colors.grey),
-                ),
-                alignment: Alignment.bottomRight,
-              ),
+    return loading
+        ? Scaffold(
+            appBar: AppBar(
+              title: Text("Shopkeeper page"),
+              centerTitle: true,
             ),
-      ViewCustomers()
-    ]);
+            body: Center(
+                child: Container(
+                    width: 200,
+                    height: 200,
+                    child: CircularProgressIndicator())))
+        : PageView(controller: _pageController, children: [
+            (!dataExists)
+                ? Scaffold(
+                    appBar: AppBar(
+                      title: Text("Shopkeeper Page"),
+                      centerTitle: true,
+                    ),
+                    body: SafeArea(
+                      child: Container(
+                        margin: EdgeInsets.all(15),
+                        child: SingleChildScrollView(
+                          controller: _scrollController,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Shop Name",
+                                ),
+                                controller: shopNameC,
+                              ),
+                              TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Shopkeeper Name",
+                                ),
+                                controller: shopkeeperNameC,
+                              ),
+                              TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Address",
+                                ),
+                                controller: addressC,
+                              ),
+                              TextField(
+                                decoration: InputDecoration(
+                                  labelText: "Vaccine Status",
+                                ),
+                                controller: vaccineC,
+                              ),
+                              ElevatedButton(
+                                onPressed: imageUpload,
+                                child: Text("Upload photo"),
+                              ),
+                              ElevatedButton(
+                                onPressed: add,
+                                child: Text("Add"),
+                              ),
+                              SizedBox(
+                                height: 30,
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  customerSignout();
+                                  Navigator.pushNamed(
+                                      context, '/selectUserType');
+                                },
+                                child: Text("logout"),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ))
+                : Scaffold(
+                    appBar: AppBar(
+                      title: Text("Shopkeeper page"),
+                      centerTitle: true,
+                    ),
+                    drawer: Drawer(
+                      child: ListView(
+                        children: <Widget>[
+                          UserAccountsDrawerHeader(
+                            accountName: Text(shopkeeperName),
+                            accountEmail: Text(email),
+                            currentAccountPicture: imageUrl == null &&
+                                    imageExists == false
+                                ? CircleAvatar(
+                                    radius: 40,
+                                  )
+                                : imageLoading
+                                    ? SpinKitRotatingCircle(
+                                        color: Colors.white,
+                                        size: 50.0,
+                                      )
+                                    : CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage: NetworkImage(imageUrl),
+                                      ),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.qr_code_outlined),
+                            title: Text("Generate QR"),
+                            onTap: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (context) => QrGenerator(),
+                              );
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.list_rounded),
+                            title: Text("View customers"),
+                            onTap: () {
+                              setState(() {
+                                _pageController.jumpToPage(1);
+                              });
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.update_sharp),
+                            title: Text("Update Fields"),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/shopkeeperUpdate');
+                            },
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.logout),
+                            title: Text("Logout"),
+                            onTap: () {
+                              customerSignout();
+                              Navigator.pushNamed(context, '/selectUserType');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    body: Scrollbar(
+                      thickness: 15,
+                      isAlwaysShown: true,
+                      controller: _scrollController,
+                      showTrackOnHover: true,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 20),
+                            imageUrl == null && imageExists == false
+                                ? CircleAvatar(
+                                    radius: 80,
+                                  )
+                                : imageLoading
+                                    ? SpinKitRotatingCircle(
+                                        color: Colors.white,
+                                        size: 50.0,
+                                      )
+                                    : CircleAvatar(
+                                        radius: 80,
+                                        backgroundImage: NetworkImage(imageUrl),
+                                      ),
+                            SizedBox(height: 20),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                tileColor: Colors.grey[100],
+                                title: Text("Shop Name"),
+                                subtitle: Text(shopName),
+                              ),
+                            ),
+                            // SizedBox(height: 10),
+                            // ListTile(
+                            //   tileColor: Colors.grey[100],
+                            //   title: Text("Email"),
+                            //   subtitle: Text(email),
+                            // ),
+                            SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                tileColor: Colors.grey[100],
+                                title: Text("Address"),
+                                subtitle: Text(address),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                tileColor: Colors.grey[100],
+                                title: Text("Vaccine Status"),
+                                subtitle: Text(vaccine),
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: ListTile(
+                                tileColor: Colors.grey[100],
+                                title: Text("Shopkeeper Name"),
+                                subtitle: Text(shopkeeperName),
+                              ),
+                            ),
+                            SizedBox(height: 20),
+
+                            SizedBox(
+                              height: 20,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    floatingActionButtonLocation:
+                        FloatingActionButtonLocation.centerFloat,
+                    floatingActionButton: Container(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                      child: Column(
+                        children: [
+                          FloatingActionButton(
+                            child: Icon(Icons.qr_code_scanner_rounded),
+                            onPressed: () {
+                              showDialog<void>(
+                                context: context,
+                                builder: (context) => QrGenerator(),
+                              );
+                            },
+                          ),
+                          SizedBox(
+                            height: 20,
+                          )
+                        ],
+                      ),
+                    ),
+                    bottomSheet: Container(
+                      height: 20,
+                      margin: EdgeInsets.only(
+                        bottom: 20,
+                        right: MediaQuery.of(context).size.width / 10,
+                      ),
+                      child: Text(
+                        "<< Swipe left to view customers",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      alignment: Alignment.bottomRight,
+                    ),
+                  ),
+            ViewCustomers()
+          ]);
   }
 }

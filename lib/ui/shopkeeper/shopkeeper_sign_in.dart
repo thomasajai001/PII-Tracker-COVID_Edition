@@ -22,7 +22,7 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
   void login() async {
     email = emailC.text.toString();
     pswd = pswdC.text.toString();
-    if (email == " ") {
+    if (email == "") {
       setState(() {
         errorEmail = "Please provide an email";
       });
@@ -31,7 +31,7 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
         errorEmail = " ";
       });
     }
-    if (pswd == " ") {
+    if (pswd == "") {
       setState(() {
         errorPass = "Please provide an password";
       });
@@ -61,7 +61,7 @@ class _ShopkeeperSignInState extends State<ShopkeeperSignIn> {
       });
       setState(() {
         if (user != null) {
-          Navigator.pushNamed(context, '/sloginloader', arguments: {
+          Navigator.pushNamed(context, '/shopkeeperHomePage', arguments: {
             'id': user.uid,
             'email': user.email,
             'date': user.metadata,

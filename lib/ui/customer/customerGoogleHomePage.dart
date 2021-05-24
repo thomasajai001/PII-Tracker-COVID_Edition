@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
 import '../../flutterfire/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:barcode_scan_fix/barcode_scan.dart';
 import './visited_shops.dart';
@@ -10,7 +9,6 @@ import './visited_shops.dart';
 // import 'package:fluttertoast/fluttertoast.dart';
 
 FirebaseFirestore firestore = FirebaseFirestore.instance;
-FirebaseStorage _storage;
 
 class CustomerGoogleHomePage extends StatefulWidget {
   @override

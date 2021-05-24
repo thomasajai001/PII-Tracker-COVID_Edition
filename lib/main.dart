@@ -1,7 +1,6 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:pii/Themes/theme2.dart';
-import 'package:pii/loading/Cloginloading.dart';
-import 'package:pii/loading/Sloading.dart';
 import 'package:pii/loading/gCustomerloading.dart';
 import 'package:pii/loading/gSloading.dart';
 import 'package:pii/ui/customer/customerUpdate.dart';
@@ -18,21 +17,11 @@ import 'ui/shopkeeper/shopkeeper_sign_in.dart';
 import 'ui/shopkeeper/shopkeeper_home_page.dart';
 import './ui/shopkeeper/shopkeeperGoogleHomePage.dart';
 import './loading/gSloading.dart';
-import './Themes/theme3.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-// import 'Themes/themes.dart';
 void main() {
   runApp(MyApp());
 }
 
-// ThemeData themeData(ThemeData theme) {
-//   // return theme.copyWith(
-//   //   textTheme: GoogleFonts.sourceSansProTextTheme(
-//   //     theme.textTheme,
-//   //   ),
-//   // );
-// }
 
 class MyApp extends StatefulWidget {
   @override
@@ -64,9 +53,7 @@ class _MyAppState extends State<MyApp> {
         '/qrGenerator': (context) => QrGenerator(),
         '/customerUpdate': (context) => CustomerUpdate(),
         '/shopkeeperUpdate': (context) => ShopkeeperUpdate(),
-        '/cloginloader': (context) => CLoginLoading(),
         '/gcloginloader': (context) => GCLoginLoading(),
-        '/sloginloader': (context) => SLoginLoading(),
         '/gsloginloader': (context) => GSLoginLoading(),
       },
     );
@@ -80,6 +67,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var firstStateEnabled = true;
   // initstate invoked at the begining when the app is rebuilt
   void initState() {
     super.initState();
@@ -92,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     //after delay of 2 seconds it will push to registration.dart in pages folder
     Future.delayed(
-      const Duration(seconds: 2),
+      const Duration(seconds: 3),
       () {
         Navigator.pushReplacementNamed(context, '/selectUserType');
       },
@@ -101,13 +89,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    new Timer(Duration(milliseconds: 700), () {
+      setState(() {
+        firstStateEnabled = false;
+      });
+    });
     return Scaffold(
       appBar: AppBar(
         title: Text("PII Tracker"),
         centerTitle: true,
       ),
       body: Center(
-        child: Text("WELCOME"),
+        child: AnimatedCrossFade(
+          firstChild: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+            height: 200.0,
+            width: 200.0,
+          ), // Your first element here,
+          secondChild: Container(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: FlutterLogo(),
+            ),
+            height: 100.0,
+            width: 200.0,
+          ), // Element after transition,
+          crossFadeState: firstStateEnabled
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond, // State of the transition,
+          duration: Duration(milliseconds: 1500),
+        ),
       ),
     );
   }
