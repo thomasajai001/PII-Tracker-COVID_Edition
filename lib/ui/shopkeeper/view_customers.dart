@@ -25,6 +25,11 @@ class _ViewCustomersState extends State<ViewCustomers> {
 
   Future getCustomers() async {
     loaded = false;
+    new Timer(new Duration(milliseconds: 350), () {
+      setState(() {
+        loaded = true;
+      });
+    });
     Map shopkeeperData;
 
     try {
@@ -59,17 +64,14 @@ class _ViewCustomersState extends State<ViewCustomers> {
         print(e.toString());
       }
     });
-    new Timer(new Duration(milliseconds: 350), () {
-      setState(() {
-        loaded = true;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: Text(""),
         title: Text("Customer list"),
       ),
       body: loaded
@@ -88,7 +90,7 @@ class _ViewCustomersState extends State<ViewCustomers> {
                       Container(
                         height: 300,
                         child: Image.network(
-                          'https://firebasestorage.googleapis.com/v0/b/pii-test-a8b13.appspot.com/o/waiting.png?alt=media&token=842495c6-4ebe-4236-9d46-1a7a08aae954',
+                          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1058271%2Fscreenshots%2F3308780%2Fsadbox_2x.png&f=1&nofb=1',
                           fit: BoxFit.cover,
                         ),
                       ),
