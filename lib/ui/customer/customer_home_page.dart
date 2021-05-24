@@ -396,6 +396,25 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                       ),
                     ),
                   ),
+                  floatingActionButtonLocation:
+                      FloatingActionButtonLocation.centerFloat,
+                  floatingActionButton: Container(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                    child: Column(
+                      children: [
+                        FloatingActionButton(
+                          child: Icon(
+                            Icons.qr_code_scanner_rounded,
+                            size: 30,
+                          ),
+                          onPressed: scan,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        )
+                      ],
+                    ),
+                  ),
                   bottomSheet: Container(
                     height: 20,
                     margin: EdgeInsets.only(

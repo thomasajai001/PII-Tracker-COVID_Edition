@@ -396,7 +396,7 @@ class _ShopkeeperHomePageState extends State<ShopkeeperHomePage> {
                       child: Column(
                         children: [
                           FloatingActionButton(
-                            child: Icon(Icons.qr_code_scanner_rounded),
+                            child: Icon(Icons.qr_code_rounded),
                             onPressed: () {
                               showDialog<void>(
                                 context: context,
