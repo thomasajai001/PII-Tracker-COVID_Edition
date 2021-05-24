@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'package:pii/flutterfire/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 // page for sign up for both customer and shopkeeper
 
 class CustomerLaunchPage extends StatefulWidget {
@@ -49,6 +51,17 @@ class _CustomerLaunchPageState extends State<CustomerLaunchPage> {
               ),
             ),
           ),
+          SizedBox(
+            height: 30,
+          ),
+          SignInButton(
+            Buttons.Google,
+            text: "Sign in with Google",
+            onPressed: () async {
+              User u = await googleSignIn();
+              Navigator.pushNamed(context, '/gcloginloader');
+            },
+          )
         ],
       ),
     );

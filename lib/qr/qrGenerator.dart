@@ -23,28 +23,30 @@ class _QrGeneratorState extends State<QrGenerator> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(),
-        body: Center(
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    height: 30,
-                  ),
-                  QrImage(
-                    data: datas,
-                    version: QrVersions.auto,
-                    size: 320,
-                    gapless: true,
-                  ),
-                ],
+    return Dialog(
+      insetAnimationCurve: Curves.decelerate,
+      child: Container(
+        margin: EdgeInsets.only(top: 10, left: 10, right: 10),
+        height: 368,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            QrImage(
+              data: datas,
+              version: QrVersions.auto,
+              size: 320,
+              gapless: true,
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text(
+                'Done!',
+                style: TextStyle(fontSize: 17),
               ),
             ),
-          ),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,14 +1,20 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ViewCustomers extends StatefulWidget {
   @override
   _ViewCustomersState createState() => _ViewCustomersState();
 }
 
+ScrollController _scrollController = ScrollController();
+
 class _ViewCustomersState extends State<ViewCustomers> {
+  bool loaded = true;
   List customerData = [];
 
   @override
@@ -18,6 +24,12 @@ class _ViewCustomersState extends State<ViewCustomers> {
   }
 
   Future getCustomers() async {
+    loaded = false;
+    new Timer(new Duration(milliseconds: 350), () {
+      setState(() {
+        loaded = true;
+      });
+    });
     Map shopkeeperData;
 
     try {
@@ -57,86 +69,134 @@ class _ViewCustomersState extends State<ViewCustomers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
+        child: Container(
+          decoration: BoxDecoration(
+              // color: Colors.pink,
+              ),
+          height: 20,
+          margin: EdgeInsets.only(
+            bottom: 20,
+            left: MediaQuery.of(context).size.width / 10,
+          ),
+          child: Text(
+            "Swipe right to to go back >>",
+            style: TextStyle(color: Colors.grey),
+          ),
+          alignment: Alignment.bottomLeft,
+        ),
+      ),
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: Text(""),
         title: Text("Customer list"),
       ),
-      body: customerData.isEmpty
-          ? Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "No customers yet!",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  SizedBox(
-                    height: 35,
-                  ),
-                  Container(
-                    height: 300,
-                    child: Image.network(
-                      'https://firebasestorage.googleapis.com/v0/b/pii-test-a8b13.appspot.com/o/waiting.png?alt=media&token=842495c6-4ebe-4236-9d46-1a7a08aae954',
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          : Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: ListView(
-                children: customerData.map((e) {
-                  return Container(
-                    height: 160,
-                    decoration: BoxDecoration(
-                      color: Colors.blue[100],
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: EdgeInsets.all(15),
-                    padding: EdgeInsets.all(15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundImage: NetworkImage(e['data']['imageUrl']),
+      body: loaded
+          ? customerData.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "No customers yet!",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 35,
+                      ),
+                      Container(
+                        height: 300,
+                        child: Image.network(
+                          'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.dribbble.com%2Fusers%2F1058271%2Fscreenshots%2F3308780%2Fsadbox_2x.png&f=1&nofb=1',
+                          fit: BoxFit.cover,
                         ),
-                        Container(
-                          width: MediaQuery.of(context).size.width * 0.55,
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                "Name : ${e['data']['name']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Vaccine Staus: ${e['data']['vaccine']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Address: ${e['data']['address']}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(height: 15),
-                              Text(
-                                "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                      ),
+                    ],
+                  ),
+                )
+              : Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: ListView(
+                    children: customerData.map((e) {
+                      return Container(
+                        height: 160,
+                        decoration: BoxDecoration(
+                          color: Colors.blue[100],
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
+                        margin: EdgeInsets.all(15),
+                        padding: EdgeInsets.all(15),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  NetworkImage(e['data']['imageUrl']),
+                            ),
+                            Container(
+                              width: MediaQuery.of(context).size.width * 0.55,
+                              child: Scrollbar(
+                                thickness: 5,
+                                isAlwaysShown: true,
+                                controller: _scrollController,
+                                showTrackOnHover: true,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children: <Widget>[
+                                      FittedBox(
+                                        child: Text(
+                                          "Name : ${e['data']['name']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      FittedBox(
+                                        child: Text(
+                                          "Vaccine Status: ${e['data']['vaccine']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      FittedBox(
+                                        child: Text(
+                                          "Address: ${e['data']['address']}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(height: 15),
+                                      FittedBox(
+                                        child: Text(
+                                          "Time: ${DateFormat.MMMd().add_jm().format(DateTime.parse(e['time'].toDate().toString()))}",
+                                          style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                )
+          : SpinKitDualRing(
+              color: Colors.blue,
+              size: 50.0,
             ),
     );
   }

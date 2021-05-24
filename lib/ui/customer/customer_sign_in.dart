@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../flutterfire/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class CustomerSignIn extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _CustomerSignInState extends State<CustomerSignIn> {
   String errorEmail = " ";
   String errorPass = " ";
   String displayMsg = " ";
+  bool _passwordVisible;
 
   void login() async {
     email = emailC.text.toString();
@@ -41,9 +43,21 @@ class _CustomerSignInState extends State<CustomerSignIn> {
 
     if (errorEmail == " " && errorPass == " ") {
       User user = await userSignIn(email, pswd).catchError((e) {
-        setState(() {
-          displayMsg = e;
-        });
+        Alert(
+          type: AlertType.error,
+          context: context,
+          title: e,
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Back",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () => Navigator.pop(context),
+              color: Colors.red,
+            ),
+          ],
+        ).show();
       });
       setState(() {
         if (user != null) {
@@ -57,6 +71,11 @@ class _CustomerSignInState extends State<CustomerSignIn> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _passwordVisible = false;
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -78,9 +97,24 @@ class _CustomerSignInState extends State<CustomerSignIn> {
                 controller: emailC,
               ),
               TextField(
+                obscureText: !_passwordVisible,
                 decoration: InputDecoration(
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      // Based on passwordVisible state choose the icon
+                      _passwordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                      color: Theme.of(context).primaryColorDark,
+                    ),
+                    onPressed: () {
+                      // Update the state i.e. toogle the state of passwordVisible variable
+                      setState(() {
+                        _passwordVisible = !_passwordVisible;
+                      });
+                    },
+                  ),
                   labelText: "Password",
-                  hintText: "password",
                   errorText: errorPass == " " ? null : '$errorPass',
                 ),
                 controller: pswdC,
@@ -100,7 +134,6 @@ class _CustomerSignInState extends State<CustomerSignIn> {
               SizedBox(
                 height: 30,
               ),
-              Text(displayMsg),
             ],
           ),
         ),
