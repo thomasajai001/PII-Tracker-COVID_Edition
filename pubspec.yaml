@@ -33,6 +33,7 @@ dependencies:
   barcode_scan_fix: ^1.0.2
   flutter_spinkit: ^5.0.0
   flutter_signin_button: ^2.0.0
+  google_fonts: ^2.1.0
   rflutter_alert:
     git: git://github.com/RatelHub/rflutter_alert.git
   flutter:
