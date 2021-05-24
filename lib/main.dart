@@ -22,7 +22,6 @@ void main() {
   runApp(MyApp());
 }
 
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -32,6 +31,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       // theme: themeData(ThemeConfig.lightTheme),
       // darkTheme: themeData(ThemeConfig.darkTheme),
       //  darkTheme: darkThemeData(context),
@@ -112,7 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
           secondChild: Container(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: FlutterLogo(),
+              child: Image.asset('assets/icon.png'),
             ),
             height: 100.0,
             width: 200.0,

@@ -101,7 +101,7 @@ class _UserRegisterState extends State<UserRegister> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Shopkeeper registration"),
+        title: Text("Registration"),
         centerTitle: true,
       ),
       body: SafeArea(

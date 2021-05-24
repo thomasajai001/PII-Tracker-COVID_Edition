@@ -26,7 +26,7 @@ class _SelectUserTypeState extends State<SelectUserType>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text("Welcome"),
-        backgroundColor: Colors.amber[700],
+        centerTitle: true,
       ),
       body: SafeArea(
         child: TabBarView(

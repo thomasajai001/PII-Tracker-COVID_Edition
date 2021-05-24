@@ -21,10 +21,15 @@ class _CustomerLaunchPageState extends State<CustomerLaunchPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+            ))),
             onPressed: customerReg,
             child: Container(
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width / 1.6,
+              width: MediaQuery.of(context).size.width / 2,
               height: 60,
               child: Text(
                 "Sign Up",
@@ -38,10 +43,15 @@ class _CustomerLaunchPageState extends State<CustomerLaunchPage> {
             height: 30,
           ),
           ElevatedButton(
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(50.0),
+            ))),
             onPressed: () => {Navigator.pushNamed(context, '/customerSignIn')},
             child: Container(
               alignment: Alignment.center,
-              width: MediaQuery.of(context).size.width / 1.6,
+              width: MediaQuery.of(context).size.width / 2,
               height: 60,
               child: Text(
                 "Login",
